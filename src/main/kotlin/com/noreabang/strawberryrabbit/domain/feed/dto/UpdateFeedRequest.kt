@@ -1,4 +1,8 @@
 package com.noreabang.strawberryrabbit.domain.feed.dto
 
-class UpdateFeedRequest {
-}
+import com.noreabang.strawberryrabbit.domain.music.model.Music
+
+data class UpdateFeedRequest(
+    val title:String,
+    val content: String,
+)

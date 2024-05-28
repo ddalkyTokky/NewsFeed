@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne
 import java.io.Serializable
 
 @Embeddable
-class FeedLikePK: Serializable{
+class FeedLikeId: Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feed_id", nullable = false)
     var feed: Feed? = null

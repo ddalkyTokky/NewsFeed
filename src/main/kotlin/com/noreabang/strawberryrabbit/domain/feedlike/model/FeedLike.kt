@@ -6,5 +6,5 @@ import jakarta.persistence.Entity
 @Entity(name = "feedlike")
 class FeedLike {
     @EmbeddedId
-    val feedLikePK: FeedLikePK = FeedLikePK()
+    val feedLikePK: FeedLikeId = FeedLikeId()
 }

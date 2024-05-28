@@ -1,7 +1,7 @@
 package com.noreabang.strawberryrabbit.domain.feed.controller
 
 import com.noreabang.strawberryrabbit.domain.feed.dto.CreateFeedRequest
-import com.noreabang.strawberryrabbit.domain.feed.dto.FeedDatailResponse
+import com.noreabang.strawberryrabbit.domain.feed.dto.FeedDetailResponse
 import com.noreabang.strawberryrabbit.domain.feed.dto.FeedResponse
 import com.noreabang.strawberryrabbit.domain.feed.dto.UpdateFeedRequest
 import org.springframework.data.domain.Page
@@ -14,12 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/feeds")
 @RestController
 class FeedController {
-//    order-by={created-at/like}
-    //    order={asc/desc}
-    //    &member={name}
-    //    &title={title}&content={content}
-    //    &page={0 ~ }&page-size={0 ~ } ok
-    //  page={0~}&size={0~}&sort={create-at/like},{asc/desc}
+    // member={name}&title={title}&content={content}&page={0~}&size={0~}&sort={create-at/like_cnt},{asc/desc}
     @GetMapping()
     fun getFeedList(
         @RequestParam member : String?,
@@ -28,12 +23,11 @@ class FeedController {
         @PageableDefault(page = 0, size = 10, sort = ["created_at"], direction = Sort.Direction.DESC) pageable: Pageable
     ) : ResponseEntity<Page<FeedResponse>>{
         TODO()
-
     }
 
     @GetMapping("/{feedId}")
-    fun getFeed(@PathVariable feedId : Long) : ResponseEntity<FeedDatailResponse> {
-        TODO("ggg")
+    fun getFeed(@PathVariable feedId : Long) : ResponseEntity<FeedDetailResponse> {
+        TODO()
 
     }
 

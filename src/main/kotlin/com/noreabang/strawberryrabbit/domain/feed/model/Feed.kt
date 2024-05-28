@@ -29,6 +29,9 @@ class Feed: CreatedAtEntity() {
     @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY, orphanRemoval = true)
     val comments: MutableList<Comment> = mutableListOf()
 
+    @Column(name = "like_cnt", nullable = false)
+    var likeCnt: Long = 0L
+
 //    companion object{
 //        fun createFeed(feedRequest: FeedRequest, member: Member): Feed {
 //            val feed: Feed = Feed()

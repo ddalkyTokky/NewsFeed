@@ -1,5 +1,6 @@
 package com.noreabang.strawberryrabbit.domain.member.model
 
+import com.noreabang.strawberryrabbit.domain.member.dto.MemberResponse
 import jakarta.persistence.*
 
 @Entity
@@ -24,17 +25,21 @@ class Member {
     @Column(length = 1000)
     var image: String? = null
 
-//    companion object {
-//        fun createMember(name: String, pw: String, secret: String): Member {
-//            val member: Member = Member()
-//            // TODO memberRequest DTO 를 만들어 완성해주세요!!
-//            return member
-//        }
-//    }
+    companion object {
+        fun createMember(email: String, nickname: String, password: String, signupType: SignUpType): Member {
+            val member = Member()
+            member.email = email
+            member.nickname = nickname
+            member.password = password
+            member.signupType = signupType
 
-//    fun toResponse(): MemberResponse {
-//        return MemberResponse(
-//            // TODO memberResponse DTO 를 만들어 완성해주세요!!
-//        )
-//    }
+            return member
+        }
+    }
+
+    fun toResponse(): MemberResponse {
+        return MemberResponse(
+            id!!, email!!, nickname!!, image!!
+        )
+    }
 }

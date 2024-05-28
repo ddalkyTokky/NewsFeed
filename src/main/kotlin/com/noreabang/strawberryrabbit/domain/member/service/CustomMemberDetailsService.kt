@@ -2,6 +2,7 @@ package com.noreabang.strawberryrabbit.infra.secutiry
 
 import com.noreabang.strawberryrabbit.domain.member.model.Member
 import com.noreabang.strawberryrabbit.domain.member.repository.MemberRepository
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.InternalAuthenticationServiceException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -10,20 +11,23 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class CustomUserDetailsService(
+class CustomMemberDetailsService(
     private val memberRepository: MemberRepository
 ) : UserDetailsService {
+    private val log = LoggerFactory.getLogger(this::class.java)
 
     override fun loadUserByUsername(email: String): UserDetails {
         var member: Member
 
         try {
             member = memberRepository.findByEmail(email)
+            log.info("member =====> {}", member)
 
         } catch (e: InternalAuthenticationServiceException) {
-            throw UsernameNotFoundException(email)
+            // TODO: InternalAuthenticationServiceException: Result must not be null에 대한 처리 필요
+            throw UsernameNotFoundException(email) 
         }
 
-        return CustomUserDetails(member) // TODO : CustomUserDetails 구현
+        return CustomMemberDetails(member)
     }
 }

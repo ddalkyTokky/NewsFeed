@@ -5,7 +5,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 
-class CustomUserDetails(
+class CustomMemberDetails(
     private val member: Member
 ) : UserDetails {
 
@@ -37,5 +37,13 @@ class CustomUserDetails(
 
     override fun isEnabled(): Boolean { // 사용자 활성화 여부(활성화면 true, 아니면 false)
         return true
+    }
+
+    fun getClaims(): Map<String, Any> {
+        val dataMap = mutableMapOf<String, Any>(
+            "email" to member.email!!,
+        )
+
+        return dataMap
     }
 }

@@ -34,15 +34,15 @@ class Feed: CreatedAtEntity() {
     @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY, orphanRemoval = true)
     val comments: MutableList<Comment> = mutableListOf()
 
-    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "feedLikePK.feed", fetch = FetchType.LAZY, orphanRemoval = true)
     val feedLikes: MutableList<FeedLike> = mutableListOf()
 
     companion object{
-        fun createFeed(feedRequest: CreateFeedRequest, member: Member): Feed {
+        fun createFeed(feedRequest: CreateFeedRequest, member: Member, music:Music): Feed {
             val feed: Feed = Feed()
             feed.title = feedRequest.title
             feed.content = feedRequest.content
-            feed.music = feedRequest.music
+            feed.music = music
             feed.member = member
             return feed
         }
@@ -51,7 +51,6 @@ class Feed: CreatedAtEntity() {
     fun updateFeed(feedRequest: UpdateFeedRequest){
         this.title = feedRequest.title
         this.content = feedRequest.content
-        this.music = feedRequest.music
     }
 
     fun toSimpleResponse(): FeedResponse {

@@ -7,6 +7,8 @@ import com.noreabang.strawberryrabbit.domain.feed.dto.FeedResponse
 import com.noreabang.strawberryrabbit.domain.feed.dto.UpdateFeedRequest
 import com.noreabang.strawberryrabbit.domain.feed.model.Feed
 import com.noreabang.strawberryrabbit.domain.feed.repository.FeedRepository
+import com.noreabang.strawberryrabbit.domain.member.repository.MemberRepository
+import com.noreabang.strawberryrabbit.domain.music.repository.MusicRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -15,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class FeedService(
-    private val repository: FeedRepository
+    private val repository: FeedRepository,
+    private val member:MemberRepository,
+    private val music: MusicRepository,
 ) {
     fun getAllFeeds(pageable: Pageable, type: String?, search: String?): Page<FeedResponse> {
         if(type.equals("title")) {
@@ -40,10 +44,11 @@ class FeedService(
 
     @Transactional
     fun createFeed(request: CreateFeedRequest,memberId:Long,musicId: Long): FeedResponse {
-//        val member
-//        val music
-//        Feed.createFeed(request,member,music)
-        TODO("멤버랑 뮤직 가져오고싶어요ㅠㅠ")
+        val member = member.findByIdOrNull(memberId) ?: throw ModelNotFoundException("Member", memberId)
+        val music = music.findByIdOrNull(musicId) ?: throw ModelNotFoundException("Music", musicId)
+        return repository.save(
+            Feed.createFeed(request,member, music)
+        ).toSimpleResponse()
     }
 
     @Transactional

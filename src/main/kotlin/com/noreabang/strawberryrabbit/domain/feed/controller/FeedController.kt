@@ -34,8 +34,10 @@ class FeedController (
     }
 
     @PostMapping()
-    fun createFeed(@RequestBody createFeedRequest: CreateFeedRequest) : ResponseEntity<FeedResponse> {
-        TODO()
+    fun createFeed(@PathVariable memberId:Long,
+                   @PathVariable musicId:Long,
+                   @RequestBody createFeedRequest: CreateFeedRequest) : ResponseEntity<FeedResponse> {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createFeed(createFeedRequest,memberId ,musicId))
     }
 
     @PutMapping("/{feedId}")

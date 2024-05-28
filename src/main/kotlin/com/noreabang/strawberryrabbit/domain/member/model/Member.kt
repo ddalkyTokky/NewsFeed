@@ -32,6 +32,7 @@ class Member {
             member.email = memberCreateRequest.email
             member.nickname = memberCreateRequest.nickname
             member.image = memberCreateRequest.image
+            member.password = password
             member.signupType = SignUpType.EMAIL
             return member
         }
@@ -39,6 +40,7 @@ class Member {
 
     fun toResponse(): MemberResponse {
         return MemberResponse(
+            this.id!!,
             this.nickname!!,
             this.email!!,
             this.image

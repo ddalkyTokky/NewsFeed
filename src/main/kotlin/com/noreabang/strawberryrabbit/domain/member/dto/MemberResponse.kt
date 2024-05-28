@@ -1,7 +1,8 @@
 package com.noreabang.strawberryrabbit.domain.member.dto
 
 data class MemberResponse (
-    val nickname: String,
+    val id: Long,
     val email: String,
+    val nickname: String,
     val image: String?
 )

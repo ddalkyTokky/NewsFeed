@@ -2,6 +2,9 @@ package com.noreabang.strawberryrabbit.infra.secutiry
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.ProviderManager
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -14,7 +17,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
-class CustomSecurityConfig {
+class CustomSecurityConfig(
+    private val userDetailsService: CustomUserDetailsService
+) {
     @Bean
     fun bCryptPasswordEncoder(): BCryptPasswordEncoder = BCryptPasswordEncoder() // 비밀번호 암호화
 
@@ -41,5 +46,13 @@ class CustomSecurityConfig {
         source.registerCorsConfiguration("/**", configuration) // 모든 URL 패턴에 대해 설정한 configuration 적용
 
         return source
+    }
+
+    @Bean
+    fun authenticationManager(): AuthenticationManager {
+        val authProvider = DaoAuthenticationProvider() // 사용자 이름과 비밀번호를 기반으로 인증을 수행하는 구성 요소
+        authProvider.setUserDetailsService(userDetailsService) // 사용자의 세부 정보를 불러오기 위한 설정
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder()) // 비밀번호 검증을 위한 설정
+        return ProviderManager(authProvider)
     }
 }

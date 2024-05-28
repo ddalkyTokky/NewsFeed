@@ -3,6 +3,8 @@ package com.noreabang.strawberryrabbit.domain.member.model
 import com.noreabang.strawberryrabbit.domain.member.dto.MemberCreateRequest
 import com.noreabang.strawberryrabbit.domain.member.dto.MemberResponse
 import jakarta.persistence.*
+import org.hibernate.annotations.JdbcType
+import org.hibernate.dialect.PostgreSQLEnumJdbcType
 
 @Entity
 class Member {
@@ -21,6 +23,7 @@ class Member {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "signup_type", nullable = false)
+    @JdbcType(PostgreSQLEnumJdbcType::class)
     var signupType: SignUpType = SignUpType.EMAIL
 
     @Column(length = 1000)

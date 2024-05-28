@@ -37,7 +37,7 @@ class Comment: CreatedAtEntity() {
 
 //    fun toResponse(): CommentResponse {
 //        return CommentResponse(
-//            // TODO commentRequest DTO 를 만들어 완성해주세요!!
+//            // TODO commentResponse DTO 를 만들어 완성해주세요!!
 //        )
 //    }
 }

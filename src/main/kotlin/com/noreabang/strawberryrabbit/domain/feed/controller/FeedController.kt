@@ -23,7 +23,7 @@ class FeedController (
     fun getFeedList(
         @RequestParam type: String?,
         @RequestParam content:String?="",
-        @PageableDefault(page = 0, size = 10, sort = ["created_at"], direction = Sort.Direction.DESC) pageable: Pageable
+        @PageableDefault(page = 0, size = 10, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
     ) : ResponseEntity<Page<FeedResponse>>{
         return ResponseEntity.status(HttpStatus.OK).body(service.getAllFeeds(pageable, type, content))
     }
@@ -39,7 +39,7 @@ class FeedController (
     }
 
     @PutMapping("/{feedId}")
-    fun updateFeed(@RequestBody updateFeedRequest: UpdateFeedRequest) : ResponseEntity<FeedResponse> {
+    fun updateFeed(@PathVariable feedId : Long, @RequestBody updateFeedRequest: UpdateFeedRequest) : ResponseEntity<FeedResponse> {
         TODO()
     }
 

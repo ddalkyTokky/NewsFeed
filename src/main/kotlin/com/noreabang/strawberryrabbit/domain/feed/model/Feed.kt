@@ -2,6 +2,10 @@ package com.noreabang.strawberryrabbit.domain.feed.model
 
 import com.noreabang.strawberryrabbit.domain.CreatedAtEntity
 import com.noreabang.strawberryrabbit.domain.comment.model.Comment
+import com.noreabang.strawberryrabbit.domain.feed.dto.CreateFeedRequest
+import com.noreabang.strawberryrabbit.domain.feed.dto.FeedDetailResponse
+import com.noreabang.strawberryrabbit.domain.feed.dto.FeedResponse
+import com.noreabang.strawberryrabbit.domain.feed.dto.UpdateFeedRequest
 import com.noreabang.strawberryrabbit.domain.feedlike.model.FeedLike
 import com.noreabang.strawberryrabbit.domain.member.model.Member
 import com.noreabang.strawberryrabbit.domain.music.model.Music
@@ -31,31 +35,44 @@ class Feed: CreatedAtEntity() {
     val comments: MutableList<Comment> = mutableListOf()
 
     @OneToMany(mappedBy = "feedLikeId.feed", fetch = FetchType.LAZY, orphanRemoval = true)
-    val feedlikes: MutableList<FeedLike> = mutableListOf()
+    val feedLikes: MutableList<FeedLike> = mutableListOf()
 
-//    companion object{
-//        fun createFeed(feedRequest: FeedRequest, member: Member): Feed {
-//            val feed: Feed = Feed()
-//            // TODO FeedRequest DTO 를 만들어 완성해주세요!!
-//            return feed
-//        }
-//    }
+    companion object{
+        fun createFeed(feedRequest: CreateFeedRequest, member: Member, music:Music): Feed {
+            val feed = Feed()
+            feed.title = feedRequest.title
+            feed.content = feedRequest.content
+            feed.music = music
+            feed.member = member
+            return feed
+        }
+    }
 
-//    fun updateFeed(feedRequest: FeedRequest): Feed{
-//        // TODO FeedRequest DTO 를 만들어 완성해주세요!!
-//        return this
-//    }
+    fun updateFeed(feedRequest: UpdateFeedRequest){
+        this.title = feedRequest.title
+        this.content = feedRequest.content
+    }
 
-//    fun toSimpleResponse(): FeedSimpleResponse {
-//        return FeedSimpleResponse(
-//            // TODO FeedSimpleResponse DTO 를 만들어 완성해주세요!!
-//        )
-//    }
+    fun toSimpleResponse(): FeedResponse {
+        return FeedResponse(
+            title = this.title,
+            content = this.content,
+            music = this.music,
+            member = this.member,
+            createdAt = this.createdAt,
+            feedLike = this.feedLikes,
+        )
+    }
 
-//    fun toDetailResponse(): FeedDetailResponse {
-//        return FeedDetailResponse(
-//            // TODO FeedDetailResponse DTO 를 만들어 완성해주세요!!
-//            comments = this.comments.map {it.toResponse()}
-//        )
-//    }
+    fun toDetailResponse(): FeedDetailResponse {
+        return FeedDetailResponse(
+            title = this.title,
+            content = this.content,
+            music = this.music,
+            member = this.member,
+            createAt = this.createdAt,
+            feedLike = this.feedLikes,
+            comments = this.comments
+        )
+    }
 }

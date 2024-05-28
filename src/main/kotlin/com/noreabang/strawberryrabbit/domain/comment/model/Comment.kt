@@ -3,7 +3,6 @@ package com.noreabang.strawberryrabbit.domain.comment.model
 import com.noreabang.strawberryrabbit.domain.CreatedAtEntity
 import com.noreabang.strawberryrabbit.domain.comment.dto.CommentRequest
 import com.noreabang.strawberryrabbit.domain.comment.dto.CommentResponse
-import com.noreabang.strawberryrabbit.domain.feed.dto.CreateFeedRequest
 import com.noreabang.strawberryrabbit.domain.feed.model.Feed
 import com.noreabang.strawberryrabbit.domain.member.model.Member
 
@@ -28,7 +27,7 @@ class Comment: CreatedAtEntity() {
 
     companion object{
         fun createComment(commentRequest: CommentRequest): Comment {
-            val comment: Comment = Comment()
+            val comment = Comment()
             comment.content = commentRequest.content
             return comment
         }

@@ -1,6 +1,7 @@
 package com.noreabang.strawberryrabbit.domain.comment.model
 
 import com.noreabang.strawberryrabbit.domain.CreatedAtEntity
+import com.noreabang.strawberryrabbit.domain.comment.dto.CommentResponse
 import com.noreabang.strawberryrabbit.domain.feed.model.Feed
 import com.noreabang.strawberryrabbit.domain.member.model.Member
 import jakarta.persistence.*
@@ -35,9 +36,8 @@ class Comment: CreatedAtEntity() {
 //        return this
 //    }
 
-//    fun toResponse(): CommentResponse {
-//        return CommentResponse(
-//            // TODO commentResponse DTO 를 만들어 완성해주세요!!
-//        )
-//    }
+    fun toResponse(): CommentResponse {
+        return CommentResponse(
+        )
+    }
 }

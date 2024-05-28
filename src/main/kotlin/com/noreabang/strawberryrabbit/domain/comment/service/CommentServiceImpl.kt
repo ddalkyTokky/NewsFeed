@@ -3,7 +3,6 @@ package com.noreabang.strawberryrabbit.domain.comment.service
 import com.noreabang.strawberryrabbit.domain.comment.dto.CommentRequest
 import com.noreabang.strawberryrabbit.domain.comment.dto.CommentResponse
 import com.noreabang.strawberryrabbit.domain.comment.model.Comment
-import com.noreabang.strawberryrabbit.domain.comment.model.toResponse
 import com.noreabang.strawberryrabbit.domain.comment.repository.CommentRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service

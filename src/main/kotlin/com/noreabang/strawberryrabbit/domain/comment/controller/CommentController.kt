@@ -11,15 +11,16 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class CommentController(
     private val commentService: CommentService,
+    private val memberService: MemberService
 ) {
-    @PostMapping("/{commentId}}") //feedId로 변경
+    @PostMapping("/{feedId}}") //feedId로 변경
     fun createComment(
-        @PathVariable commentId: Long,
+        @PathVariable feedId: Long,
         @RequestBody commentRequest: CommentRequest
     ): ResponseEntity<CommentResponse> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(commentService.createComment(commentId, commentRequest))
+            .body(commentService.createComment(feedId, memberId, commentRequest))
     } // 댓글 등록
 
     @PutMapping("/{commentId}")
@@ -29,7 +30,7 @@ class CommentController(
     ): ResponseEntity<CommentResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(commentService.updateComment(commentId, commentRequest))
+            .body(commentService.updateComment(memberId, commentId, commentRequest))
     } // 댓글 수정
 
     @DeleteMapping("/c{commentId}")

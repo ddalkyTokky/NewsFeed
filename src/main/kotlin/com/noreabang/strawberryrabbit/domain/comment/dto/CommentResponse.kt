@@ -1,9 +1,9 @@
 package com.noreabang.strawberryrabbit.domain.comment.dto
 
-import java.time.LocalDateTime
+import java.sql.Timestamp
 
 data class CommentResponse(
     val id: Long,
-    val content: String,
-    val createdAt: LocalDateTime
+    val content: String?,
+    val createdAt: Timestamp?
 )

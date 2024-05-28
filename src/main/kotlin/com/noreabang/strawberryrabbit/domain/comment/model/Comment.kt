@@ -23,21 +23,11 @@ class Comment: CreatedAtEntity() {
     @Column(nullable = false)
     var content: String? = null
 
-//    companion object {
-//        fun createComment(member: Member, feed: Feed, commentRequest: CommentRequest): Comment {
-//            val comment: Comment = Comment()
-//            // TODO commentRequest DTO 를 만들어 완성해주세요!!
-//            return comment
-//        }
-//    }
-
-//    fun updateComment(commentRequest: CommentRequest): Comment{
-//        // TODO commentRequest DTO 를 만들어 완성해주세요!!
-//        return this
-//    }
-
     fun toResponse(): CommentResponse {
         return CommentResponse(
+            id = id!!,
+            content = content,
+            createdAt = createdAt,
         )
     }
 }

@@ -33,7 +33,7 @@ class FeedController {
 
     @GetMapping("/{feedId}")
     fun getFeed(@PathVariable feedId : Long) : ResponseEntity<FeedDatailResponse> {
-        TODO()
+        TODO("ggg")
 
     }
 

@@ -12,7 +12,7 @@ import org.springframework.util.StreamUtils
 import java.nio.charset.StandardCharsets
 
 class JsonMemberEmailPasswordAuthenticationFilter :
-    AbstractAuthenticationProcessingFilter(AntPathRequestMatcher("/signin", "POST")) {
+    AbstractAuthenticationProcessingFilter(AntPathRequestMatcher("/members/signin", "POST")) {
 
     override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication {
 

@@ -10,4 +10,3 @@ class StrawberryrabbitApplication
 fun main(args: Array<String>) {
 	runApplication<StrawberryrabbitApplication>(*args)
 }
-

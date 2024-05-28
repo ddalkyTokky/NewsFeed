@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 class CommentController(
     private val commentService: CommentService,
 ) {
-    @PostMapping("/{feedId}}") //feedId로 변경
+    @PostMapping("/{feedId}") //feedId로 변경
     fun createComment(
         @PathVariable feedId: Long,
         @RequestBody commentRequest: CommentRequest

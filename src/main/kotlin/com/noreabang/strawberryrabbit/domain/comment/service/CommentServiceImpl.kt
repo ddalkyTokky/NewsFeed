@@ -8,7 +8,7 @@ import com.noreabang.strawberryrabbit.domain.comment.repository.CommentRepositor
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.todoapplication.todoapplication.domain.exception.ModelNotFoundException
+import com.noreabang.strawberryrabbit.domain.exception.ModelNotFoundException
 
 @Service
 class CommentServiceImpl(

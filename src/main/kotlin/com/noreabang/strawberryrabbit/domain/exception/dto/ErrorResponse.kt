@@ -1,3 +1,3 @@
-package org.todoapplication.todoapplication.domain.exception.dto
+package com.noreabang.strawberryrabbit.domain.exception.dto
 
 data class ErrorResponse(val message: String?)

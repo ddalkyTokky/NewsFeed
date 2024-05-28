@@ -29,12 +29,12 @@ class Comment (
     ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id : Long? = null
+    var commentId : Long? = null
 }
 
 fun Comment.toResponse(): CommentResponse {
     return CommentResponse(
-        id = id!!,
+        id = commentId!!,
         content = content,
         createdAt = createdAt,
     )

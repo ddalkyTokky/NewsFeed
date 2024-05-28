@@ -1,10 +1,10 @@
-package org.todoapplication.todoapplication.domain.exception
+package com.noreabang.strawberryrabbit.domain.exception
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import org.todoapplication.todoapplication.domain.exception.dto.ErrorResponse
+import com.noreabang.strawberryrabbit.domain.exception.dto.ErrorResponse
 
 @RestControllerAdvice
 class GlobalExceptionHandler {

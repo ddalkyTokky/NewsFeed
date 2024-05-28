@@ -1,4 +1,4 @@
-package org.todoapplication.todoapplication.domain.exception
+package com.noreabang.strawberryrabbit.domain.exception
 
 data class ModelNotFoundException(
     val modelName: String, val userid: Long):

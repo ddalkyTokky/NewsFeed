@@ -1,4 +1,4 @@
-package com.noreabang.strawberryrabbit.domain.exception
+package com.noreabang.strawberryrabbit.infra.exception
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

@@ -33,5 +33,4 @@ class MemberController(
     ): ResponseEntity<Map<String, Any>> {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.refresh(authHeader, refreshToken))
     }
-
 }

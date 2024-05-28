@@ -1,5 +1,6 @@
 package com.noreabang.strawberryrabbit.domain.member.model
 
+import com.noreabang.strawberryrabbit.domain.member.dto.MemberCreateRequest
 import com.noreabang.strawberryrabbit.domain.member.dto.MemberResponse
 import jakarta.persistence.*
 
@@ -26,20 +27,23 @@ class Member {
     var image: String? = null
 
     companion object {
-        fun createMember(email: String, nickname: String, password: String, signupType: SignUpType): Member {
-            val member = Member()
-            member.email = email
-            member.nickname = nickname
+        fun createMember(memberCreateRequest: MemberCreateRequest, password: String): Member {
+            val member: Member = Member()
+            member.email = memberCreateRequest.email
+            member.nickname = memberCreateRequest.nickname
+            member.image = memberCreateRequest.image
             member.password = password
-            member.signupType = signupType
-
+            member.signupType = SignUpType.EMAIL
             return member
         }
     }
 
     fun toResponse(): MemberResponse {
         return MemberResponse(
-            id!!, email!!, nickname!!, image!!
+            this.id!!,
+            this.nickname!!,
+            this.email!!,
+            this.image
         )
     }
 }

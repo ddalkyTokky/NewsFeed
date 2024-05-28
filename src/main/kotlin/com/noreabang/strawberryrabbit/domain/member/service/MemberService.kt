@@ -9,8 +9,18 @@ import java.util.*
 @Service
 class MemberService(
     private val memberRepository: MemberRepository,
-    private val jwtUtil: JwtUtil
+    private val jwtUtil: JwtUtil,
+    private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
+  @Transactional
+    fun createUser(memberCreateRequest: MemberCreateRequest): MemberResponse {
+        return memberRepository.save(
+            Member.createMember(
+                memberCreateRequest,
+                bCryptPasswordEncoder.encode(memberCreateRequest.password),
+            )
+        ).toResponse()
+  
     fun refresh(authHeader: String, refreshToken: String): Map<String, Any> {
         if (refreshToken == null) {
             throw CustomJwtException("NULL_REFRESH")

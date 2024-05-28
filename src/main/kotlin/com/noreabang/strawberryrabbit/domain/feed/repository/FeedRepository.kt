@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface FeedRepository : JpaRepository<Feed, Long>{
     override fun findAll(pageable:Pageable): Page<Feed>
-    fun findAllByMemberNicknameContains(nickname:String, pageable: Pageable): Page<Feed>
-    fun findAllByTitleContains(title:String, pageable: Pageable): Page<Feed>
-    fun findAllByContentContains(content:String, pageable: Pageable): Page<Feed>
+    fun findAllByMemberNicknameContains(nickname:String?, pageable: Pageable): Page<Feed>
+    fun findAllByTitleContains(title:String?, pageable: Pageable): Page<Feed>
+    fun findAllByContentContains(content:String?, pageable: Pageable): Page<Feed>
 }

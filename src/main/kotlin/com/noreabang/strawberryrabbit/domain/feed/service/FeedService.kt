@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 class FeedService(
     private val repository: FeedRepository
 ) {
-    fun getAllFeeds(pageable: Pageable, type: String?, search: String): Page<FeedResponse> {
+    fun getAllFeeds(pageable: Pageable, type: String?, search: String?): Page<FeedResponse> {
         if(type.equals("title")) {
             val feeds : Page<Feed> = repository.findAllByTitleContains(search,pageable)
             return feeds.map { it.toSimpleResponse() }
@@ -43,7 +43,6 @@ class FeedService(
 //        val member
 //        val music
 //        Feed.createFeed(request,member,music)
-//
         TODO("멤버랑 뮤직 가져오고싶어요ㅠㅠ")
     }
 
@@ -52,7 +51,6 @@ class FeedService(
 //        val member //인증어케가져다씀?
 //        val music
 //        Feed.createFeed(request,member,music)
-//
         TODO("멤버랑 뮤직 가져오고싶어요ㅠㅠ")
     }
 

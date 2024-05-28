@@ -22,7 +22,7 @@ class FeedController (
     @GetMapping()
     fun getFeedList(
         @RequestParam type: String?,
-        @RequestParam content:String="",
+        @RequestParam content:String?="",
         @PageableDefault(page = 0, size = 10, sort = ["created_at"], direction = Sort.Direction.DESC) pageable: Pageable
     ) : ResponseEntity<Page<FeedResponse>>{
         return ResponseEntity.status(HttpStatus.OK).body(service.getAllFeeds(pageable, type, content))
@@ -30,7 +30,7 @@ class FeedController (
 
     @GetMapping("/{feedId}")
     fun getFeed(@PathVariable feedId : Long) : ResponseEntity<FeedDetailResponse> {
-        TODO()
+        return ResponseEntity.status(HttpStatus.OK).body(service.getFeedById(feedId))
     }
 
     @PostMapping()
@@ -44,8 +44,9 @@ class FeedController (
     }
 
     @DeleteMapping("/{feedId}")
-    fun deleteFeed(@PathVariable feedId : Long) {
-        TODO()
+    fun deleteFeed(@PathVariable feedId : Long) : ResponseEntity<Unit> {
+        service.deleteFeed(feedId)
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 
 }

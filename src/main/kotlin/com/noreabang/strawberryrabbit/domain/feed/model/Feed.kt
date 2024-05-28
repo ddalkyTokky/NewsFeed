@@ -2,6 +2,7 @@ package com.noreabang.strawberryrabbit.domain.feed.model
 
 import com.noreabang.strawberryrabbit.domain.CreatedAtEntity
 import com.noreabang.strawberryrabbit.domain.comment.model.Comment
+import com.noreabang.strawberryrabbit.domain.feedlike.model.FeedLike
 import com.noreabang.strawberryrabbit.domain.member.model.Member
 import com.noreabang.strawberryrabbit.domain.music.model.Music
 import jakarta.persistence.*
@@ -29,8 +30,8 @@ class Feed: CreatedAtEntity() {
     @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY, orphanRemoval = true)
     val comments: MutableList<Comment> = mutableListOf()
 
-//    @Column(name = "like_cnt", nullable = false)
-//    var likeCnt: Long = 0L
+    @OneToMany(mappedBy = "feedLikeId.feed", fetch = FetchType.LAZY, orphanRemoval = true)
+    val feedlikes: MutableList<FeedLike> = mutableListOf()
 
 //    companion object{
 //        fun createFeed(feedRequest: FeedRequest, member: Member): Feed {

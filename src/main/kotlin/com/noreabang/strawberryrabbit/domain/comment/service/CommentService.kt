@@ -4,8 +4,7 @@ import com.noreabang.strawberryrabbit.domain.comment.dto.CommentRequest
 import com.noreabang.strawberryrabbit.domain.comment.dto.CommentResponse
 import com.noreabang.strawberryrabbit.domain.comment.model.Comment
 import com.noreabang.strawberryrabbit.domain.comment.repository.CommentRepository
-import com.noreabang.strawberryrabbit.domain.exception.ModelNotFoundException
-import com.noreabang.strawberryrabbit.domain.feed.repository.FeedRepository
+import com.noreabang.strawberryrabbit.infra.exception.ModelNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CommentService(
     private val commentRepository: CommentRepository,
-    private val feedRepository : FeedRepository,
+
 ) {
     fun getComment(commentId: Long): CommentResponse {
         val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)

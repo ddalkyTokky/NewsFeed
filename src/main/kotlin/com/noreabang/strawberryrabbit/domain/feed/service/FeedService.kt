@@ -1,12 +1,13 @@
 package com.noreabang.strawberryrabbit.domain.feed.service
 
-import com.noreabang.strawberryrabbit.domain.exception.ModelNotFoundException
+
 import com.noreabang.strawberryrabbit.domain.feed.dto.CreateFeedRequest
 import com.noreabang.strawberryrabbit.domain.feed.dto.FeedDetailResponse
 import com.noreabang.strawberryrabbit.domain.feed.dto.FeedResponse
 import com.noreabang.strawberryrabbit.domain.feed.dto.UpdateFeedRequest
 import com.noreabang.strawberryrabbit.domain.feed.model.Feed
 import com.noreabang.strawberryrabbit.domain.feed.repository.FeedRepository
+import com.noreabang.strawberryrabbit.infra.exception.ModelNotFoundException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull

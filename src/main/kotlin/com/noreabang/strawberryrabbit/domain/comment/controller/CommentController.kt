@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/comments")
 @RestController
 class CommentController(
-    private val commentService: CommentService
+    private val commentService: CommentService,
 ) {
     @PostMapping("/{feedId}}") //feedId로 변경
     fun createComment(

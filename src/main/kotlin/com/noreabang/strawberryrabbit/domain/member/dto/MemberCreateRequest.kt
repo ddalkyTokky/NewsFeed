@@ -17,5 +17,5 @@ data class MemberCreateRequest (
     val password: String,
 
     @field:Size(max = 1000, message = "image URL must be shorter than 1000")
-    val image: String
+    val image: String?
 )

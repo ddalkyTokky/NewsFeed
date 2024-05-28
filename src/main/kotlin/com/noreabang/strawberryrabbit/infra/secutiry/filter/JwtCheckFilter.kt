@@ -1,6 +1,7 @@
 package com.noreabang.strawberryrabbit.infra.secutiry.filter
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.noreabang.strawberryrabbit.domain.member.dto.MemberCreateRequest
 import com.noreabang.strawberryrabbit.domain.member.model.Member
 import com.noreabang.strawberryrabbit.domain.member.model.SignUpType
 import com.noreabang.strawberryrabbit.infra.secutiry.CustomMemberDetails
@@ -40,10 +41,13 @@ class JwtCheckFilter(
 
             val user = CustomMemberDetails(
                 Member.createMember(
-                    email = claims["email"].toString(),
-                    nickname = claims["nickname"].toString(),
-                    password = claims["password"].toString(),
-                    signupType = SignUpType.valueOf(claims["signupType"].toString())
+                    MemberCreateRequest(
+                        claims["email"].toString(),
+                        claims["nickname"].toString(),
+                        "",
+                        null
+                    ),
+                    claims["password"].toString()
                 )
             )
 

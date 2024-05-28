@@ -1,9 +1,14 @@
 package com.noreabang.strawberryrabbit.domain.member.service
 
+import com.noreabang.strawberryrabbit.domain.member.dto.MemberCreateRequest
+import com.noreabang.strawberryrabbit.domain.member.dto.MemberResponse
+import com.noreabang.strawberryrabbit.domain.member.model.Member
 import com.noreabang.strawberryrabbit.domain.member.repository.MemberRepository
 import com.noreabang.strawberryrabbit.infra.secutiry.exception.CustomJwtException
 import com.noreabang.strawberryrabbit.infra.secutiry.util.JwtUtil
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
@@ -20,13 +25,10 @@ class MemberService(
                 bCryptPasswordEncoder.encode(memberCreateRequest.password),
             )
         ).toResponse()
+      }
   
     fun refresh(authHeader: String, refreshToken: String): Map<String, Any> {
-        if (refreshToken == null) {
-            throw CustomJwtException("NULL_REFRESH")
-        }
-
-        if (authHeader == null || authHeader.length < 7) {
+        if (authHeader.length < 7) {
             throw CustomJwtException("INVALID_STRING")
         }
 

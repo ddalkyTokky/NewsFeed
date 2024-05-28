@@ -21,7 +21,7 @@ class CommentServiceImpl(
     }
 
     @Transactional
-    override fun createComment(feedId: Long, request: CommentRequest): CommentResponse {
+    override fun createComment(commentId: Long, request: CommentRequest): CommentResponse { // feedId로 변경
 //        val feed = feedRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Feed", id)
         return commentRepository.save(
             Comment(
@@ -31,16 +31,16 @@ class CommentServiceImpl(
     }
 
     @Transactional
-    override fun updateComment(feedId: Long, commentId: Long, request: CommentRequest): CommentResponse {
-        val comment = commentRepository.findByFeedIdAndId(feedId, commentId) ?: throw ModelNotFoundException("Comment", commentId)
+    override fun updateComment(commentId: Long, request: CommentRequest): CommentResponse {
+        val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
             comment.content = request.content
             return commentRepository.save(comment).toResponse()
 
     }
 
     @Transactional
-    override fun deleteComment(feedId: Long, commentId: Long) {
-        val comment = commentRepository.findByFeedIdAndId(feedId, commentId) ?: throw ModelNotFoundException("Comment", commentId)
+    override fun deleteComment(commentId: Long) {
+        val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
         commentRepository.delete(comment)
     }
 }

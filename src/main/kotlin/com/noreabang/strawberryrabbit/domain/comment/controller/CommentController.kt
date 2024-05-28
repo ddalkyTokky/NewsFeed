@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*
 class CommentController(
     private val commentService: CommentService,
 ) {
-    @PostMapping("/{feedId}}")
+    @PostMapping("/{commentId}}") //feedId로 변경
     fun createComment(
-        @PathVariable feedId: Long,
+        @PathVariable commentId: Long,
         @RequestBody commentRequest: CommentRequest
     ): ResponseEntity<CommentResponse> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(commentService.createComment(feedId, commentRequest))
+            .body(commentService.createComment(commentId, commentRequest))
     } // 댓글 등록
 
     @PutMapping("/{commentId}")

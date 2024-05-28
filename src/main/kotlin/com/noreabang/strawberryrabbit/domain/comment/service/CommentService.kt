@@ -6,9 +6,9 @@ import com.noreabang.strawberryrabbit.domain.comment.dto.CommentResponse
 interface CommentService {
     fun getComment(commentId: Long): CommentResponse
 
-    fun createComment(feedId : Long, request: CommentRequest) : CommentResponse
+    fun createComment(commentId: Long, request: CommentRequest) : CommentResponse
+// feedId로 변경
+    fun updateComment(commentId : Long, request : CommentRequest) : CommentResponse
 
-    fun updateComment(feedId : Long, commentId : Long, request : CommentRequest) : CommentResponse
-
-    fun deleteComment(feedId : Long, commentId : Long) : CommentResponse
+    fun deleteComment(commentId : Long)
 }

@@ -29,7 +29,7 @@ class MemberService(
         ).toResponse()
     }
 
-    fun getUserDetails(): CustomMemberDetails? {
+    fun getMemberDetails(): CustomMemberDetails? {
         val principal = SecurityContextHolder.getContext().authentication.principal
         return if (principal is CustomMemberDetails) principal else null
     }
@@ -46,7 +46,7 @@ class MemberService(
         }
 
         val claims = jwtUtil.validateToken(refreshToken)
-        val newAccessToken = jwtUtil.generateToken(claims, 10) // 10분
+        val newAccessToken = jwtUtil.generateToken(claims, 60) // 60분
         val newRefreshToken =
             if (checkTime(claims["exp"] as Int)) jwtUtil.generateToken(claims, 60 * 24) else refreshToken
 

@@ -37,19 +37,19 @@ class FeedController (
 
     @PostMapping()
     fun createFeed(
-                   @RequestBody createFeedRequest: CreateFeedRequest,
-                   @RequestBody musicId: Long
+                   @RequestBody createFeedRequest: CreateFeedRequest
     ) : ResponseEntity<FeedResponse> {
-        val id = memberService.getMemberDetails()?.getMemberId()
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createFeed(createFeedRequest,id!! ,musicId))
+        println("??????????")
+        val id : Long? = memberService.getMemberDetails()?.getMemberId()
+        println("============${id}=========")
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createFeed(createFeedRequest,id!!))
     }
 
     @PutMapping("/{feedId}")
     fun updateFeed(@PathVariable feedId : Long,
-                   @RequestBody musicId: Long,
                    @RequestBody updateFeedRequest: UpdateFeedRequest) : ResponseEntity<FeedResponse> {
-
-        return ResponseEntity.status(HttpStatus.OK).body(service.updateFeed(updateFeedRequest, musicId, feedId))
+        val memberId = memberService.getMemberDetails()?.getMemberId()
+        return ResponseEntity.status(HttpStatus.OK).body(service.updateFeed(updateFeedRequest, feedId, memberId!!))
     }
 
     @DeleteMapping("/{feedId}")

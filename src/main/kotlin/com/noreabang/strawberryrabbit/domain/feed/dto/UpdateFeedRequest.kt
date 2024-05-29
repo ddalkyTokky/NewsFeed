@@ -5,5 +5,5 @@ import com.noreabang.strawberryrabbit.domain.music.dto.MusicResponse
 data class UpdateFeedRequest(
     val title:String,
     val content: String,
-    val music: MusicResponse?
+    val musicId: Long?
 )

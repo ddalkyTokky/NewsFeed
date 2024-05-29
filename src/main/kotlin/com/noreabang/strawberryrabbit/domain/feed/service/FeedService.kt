@@ -43,19 +43,19 @@ class FeedService(
     }
 
     @Transactional
-    fun createFeed(request: CreateFeedRequest,id: Long,musicId: Long): FeedResponse {
+    fun createFeed(request: CreateFeedRequest,id: Long): FeedResponse {
         val member = membersRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Member", id)
-        val music = musicRepository.findByIdOrNull(musicId) ?: throw ModelNotFoundException("Music", musicId)
+        val music = musicRepository.findByIdOrNull(request.musicId) ?: throw ModelNotFoundException("Music", request.musicId)
         return feedRepository.save(
             Feed.createFeed(request, member, music)
         ).toSimpleResponse()
     }
 
     @Transactional
-    fun updateFeed(updateFeedRequest: UpdateFeedRequest, musicId: Long, feedId: Long): FeedResponse {
-        val music = musicRepository.findByIdOrNull(musicId) ?: throw ModelNotFoundException("Music", musicId)
+    fun updateFeed(updateFeedRequest: UpdateFeedRequest, feedId: Long, memberId:Long): FeedResponse {
+        val music = musicRepository.findByIdOrNull(updateFeedRequest.musicId) ?: throw ModelNotFoundException("Music", updateFeedRequest.musicId)
         val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
-        feed.updateFeed(updateFeedRequest, music)
+        if(memberId == feed.member!!.id) feed.updateFeed(updateFeedRequest, music)
 
         return feed.toSimpleResponse()
     }

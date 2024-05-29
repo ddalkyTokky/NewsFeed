@@ -1,5 +1,7 @@
 package com.noreabang.strawberryrabbit.domain.music.model
 
+import com.noreabang.strawberryrabbit.domain.music.dto.MusicRequest
+import com.noreabang.strawberryrabbit.domain.music.dto.MusicResponse
 import jakarta.persistence.*
 
 @Entity
@@ -17,17 +19,22 @@ class Music {
     @Column(length = 1000)
     var cover: String? = null
 
-//    companion object {
-//        fun createMusic(musicRequest: MusicRequest): Music {
-//            val music: Music = Music()
-//            // TODO musicRequest DTO 를 만들어 완성해주세요!!
-//            return music
-//        }
-//    }
+    companion object {
+        fun createMusic(musicRequest: MusicRequest): Music {
+            val music: Music = Music()
+            music.singer = musicRequest.singer
+            music.title = musicRequest.title
+            music.cover = musicRequest.cover
+            return music
+        }
+    }
 
-//    fun toResponse(): MusicResponse {
-//        return MusicResponse(
-//            // TODO musicResponse DTO 를 만들어 완성해주세요!!
-//        )
-//    }
+    fun toResponse(): MusicResponse {
+        return MusicResponse(
+            id = id!!,
+            singer = singer,
+            title = title,
+            cover = cover
+        )
+    }
 }

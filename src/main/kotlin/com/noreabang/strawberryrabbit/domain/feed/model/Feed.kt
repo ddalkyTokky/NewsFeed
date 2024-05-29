@@ -34,7 +34,7 @@ class Feed: CreatedAtEntity() {
     @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY, orphanRemoval = true)
     val comments: MutableList<Comment> = mutableListOf()
 
-    @OneToMany(mappedBy = "feedLikePK.feed", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "feedLikeId.feed", fetch = FetchType.LAZY, orphanRemoval = true)
     val feedLikes: MutableList<FeedLike> = mutableListOf()
 
     companion object{

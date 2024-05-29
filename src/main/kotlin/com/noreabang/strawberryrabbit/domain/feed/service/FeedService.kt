@@ -12,6 +12,7 @@ import com.noreabang.strawberryrabbit.domain.music.repository.MusicRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -64,13 +65,15 @@ class FeedService(
         val music = musicRepository.findByIdOrNull(updateFeedRequest.musicId) ?: throw ModelNotFoundException("Music", updateFeedRequest.musicId)
 
         val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
-        if(memberId == feed.member!!.id) feed.updateFeed(updateFeedRequest, music)
+        if(memberId != feed.member!!.id) throw AccessDeniedException("Not access")
 
+        feed.updateFeed(updateFeedRequest, music)
         return feed.toSimpleResponse()
     }
 
-    fun deleteFeed(feedId:Long) {
+    fun deleteFeed(feedId:Long, memberId:Long) {
         val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
+        if(memberId != feed.member!!.id) throw AccessDeniedException("Not access")
         feedRepository.delete(feed)
     }
 

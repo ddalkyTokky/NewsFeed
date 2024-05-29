@@ -40,7 +40,7 @@ class FeedController (
                    @RequestBody createFeedRequest: CreateFeedRequest
     ) : ResponseEntity<FeedResponse> {
         val id : Long? = memberService.getMemberDetails()?.getMemberId()
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createFeed(createFeedRequest,id!!))
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createFeed(createFeedRequest, id!!))
     }
 
     @PutMapping("/{feedId}")

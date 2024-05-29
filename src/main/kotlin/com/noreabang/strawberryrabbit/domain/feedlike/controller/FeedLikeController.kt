@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/like")
 class FeedLikeController (
     private val memberService: MemberService,
-    private val feedLkeService: FeedLikeService
+    private val feedLikeService: FeedLikeService
 ) {
     @PostMapping("/{feedId}")
     fun feedLike(

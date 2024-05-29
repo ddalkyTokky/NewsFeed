@@ -23,10 +23,6 @@ class MemberService(
     private val jwtUtil: JwtUtil,
     private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
-    fun getMemberById(memberId: Long): Member {
-        return memberRepository.findByIdOrNull(memberId) ?: throw ModelNotFoundException("Member", memberId)
-    }
-
     @Transactional
     fun createMember(memberCreateRequest: MemberCreateRequest): MemberResponse {
         return memberRepository.save(

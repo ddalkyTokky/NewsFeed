@@ -1,3 +1,6 @@
-package com.noreabang.strawberryrabbit.domain.exception.dto
+package com.noreabang.strawberryrabbit.infra.exception.dto
 
-data class ErrorResponse(val message: String?)
+data class ErrorResponse(
+    val message: String?
+)
+

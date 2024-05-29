@@ -58,9 +58,8 @@ class Feed: CreatedAtEntity() {
         return FeedResponse(
             title = this.title,
             content = this.content,
-            music = this.music,
-            member = this.member,
-//            memberName = this.member?.nickname,
+            music = this.music!!.toResponse(),
+            member = this.member!!.toResponse(),
             createdAt = this.createdAt,
 //            feedLike = this.feedLikes,
         )
@@ -70,8 +69,8 @@ class Feed: CreatedAtEntity() {
         return FeedDetailResponse(
             title = this.title,
             content = this.content,
-            music = this.music,
-            member = this.member,
+            music = this.music!!.toResponse(),
+            member = this.member!!.toResponse(),
             createAt = this.createdAt,
 //            feedLike = this.feedLikes,
 //            comments = this.comments.map { it.toResponse() }

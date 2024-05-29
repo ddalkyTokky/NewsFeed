@@ -59,8 +59,9 @@ class Feed: CreatedAtEntity() {
             content = this.content,
             music = this.music,
             member = this.member,
+//            memberName = this.member?.nickname,
             createdAt = this.createdAt,
-            feedLike = this.feedLikes,
+//            feedLike = this.feedLikes,
         )
     }
 
@@ -71,8 +72,8 @@ class Feed: CreatedAtEntity() {
             music = this.music,
             member = this.member,
             createAt = this.createdAt,
-            feedLike = this.feedLikes,
-            comments = this.comments
+//            feedLike = this.feedLikes,
+            comments = this.comments.map { it.toResponse() }
         )
     }
 }

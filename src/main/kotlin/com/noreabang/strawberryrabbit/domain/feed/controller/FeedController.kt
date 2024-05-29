@@ -5,6 +5,7 @@ import com.noreabang.strawberryrabbit.domain.feed.dto.FeedDetailResponse
 import com.noreabang.strawberryrabbit.domain.feed.dto.FeedResponse
 import com.noreabang.strawberryrabbit.domain.feed.dto.UpdateFeedRequest
 import com.noreabang.strawberryrabbit.domain.feed.service.FeedService
+import com.noreabang.strawberryrabbit.domain.member.service.MemberService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -17,14 +18,16 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class FeedController (
     private val service: FeedService,
+    private val memberService: MemberService
 ) {
     // member={name}&title={title}&content={content}&page={0~}&size={0~}&sort={create-at/like_cnt},{asc/desc}
     @GetMapping()
     fun getFeedList(
         @RequestParam type: String?,
-        @RequestParam content:String?="",
+        @RequestParam content:String?,
         @PageableDefault(page = 0, size = 10, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
     ) : ResponseEntity<Page<FeedResponse>>{
+
         return ResponseEntity.status(HttpStatus.OK).body(service.getAllFeeds(pageable, type, content))
     }
 
@@ -34,11 +37,21 @@ class FeedController (
     }
 
     @PostMapping()
-    fun createFeed(@PathVariable memberId:Long,
-                   @PathVariable musicId:Long,
-                   @RequestBody createFeedRequest: CreateFeedRequest) : ResponseEntity<FeedResponse> {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createFeed(createFeedRequest,memberId ,musicId))
+    fun createFeed(
+                   @RequestBody createFeedRequest: CreateFeedRequest,
+                   @RequestParam musicId: Long
+    ) : ResponseEntity<FeedResponse> {
+        val temp = memberService.getMemberDetails()?.username
+        println("=========${temp}=========")
+        val email : String = memberService.getMemberDetails()?.username.toString()
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createFeed(createFeedRequest,email ,musicId))
     }
+
+//    @PostMapping()
+//    fun createFeed(@RequestBody createFeedRequest: CreateFeedRequest) {
+//        val email = memberService.getMemberDetails()?.username
+//        println("************************ memberInfo: $email")
+//    }
 
     @PutMapping("/{feedId}")
     fun updateFeed(@PathVariable feedId : Long, @RequestBody updateFeedRequest: UpdateFeedRequest) : ResponseEntity<FeedResponse> {

@@ -61,7 +61,7 @@ class Feed: CreatedAtEntity() {
             music = this.music!!.toResponse(),
             member = this.member!!.toResponse(),
             createdAt = this.createdAt,
-//            feedLike = this.feedLikes,
+            likeCnt = this.feedLikes.size.toLong(),
         )
     }
 
@@ -72,7 +72,7 @@ class Feed: CreatedAtEntity() {
             music = this.music!!.toResponse(),
             member = this.member!!.toResponse(),
             createAt = this.createdAt,
-//            feedLike = this.feedLikes,
+            feedLikes = this.feedLikes.map { it.toResponse() },
             comments = this.comments.map { it.toResponse() }
         )
     }

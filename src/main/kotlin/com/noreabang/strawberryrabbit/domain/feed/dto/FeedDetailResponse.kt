@@ -1,6 +1,7 @@
 package com.noreabang.strawberryrabbit.domain.feed.dto
 
 import com.noreabang.strawberryrabbit.domain.comment.dto.CommentResponse
+import com.noreabang.strawberryrabbit.domain.feedlike.dto.FeedLikeResponse
 import com.noreabang.strawberryrabbit.domain.feedlike.model.FeedLike
 import com.noreabang.strawberryrabbit.domain.member.dto.MemberResponse
 import com.noreabang.strawberryrabbit.domain.music.dto.MusicResponse
@@ -13,6 +14,6 @@ data class FeedDetailResponse(
     val member: MemberResponse?,
     val music: MusicResponse?,
     val createAt: Timestamp?,
-//    val feedLike: List<FeedLike>?,
+    val feedLikes: List<FeedLikeResponse>,
     val comments: List<CommentResponse>
 )

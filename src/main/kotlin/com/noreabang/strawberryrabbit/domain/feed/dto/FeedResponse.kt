@@ -11,5 +11,5 @@ data class FeedResponse (
     val createdAt: Timestamp?,
     val member:MemberResponse?,
     val music: MusicResponse?,
-//    val feedLike: List<FeedLike>?,
+    val likeCnt: Long
 )

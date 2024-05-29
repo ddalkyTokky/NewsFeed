@@ -2,6 +2,7 @@ package com.noreabang.strawberryrabbit.domain.member.service
 
 import com.noreabang.strawberryrabbit.domain.member.dto.MemberCreateRequest
 import com.noreabang.strawberryrabbit.domain.member.dto.MemberResponse
+import com.noreabang.strawberryrabbit.domain.member.dto.MemberUpdateRequest
 import com.noreabang.strawberryrabbit.domain.member.model.Member
 import com.noreabang.strawberryrabbit.domain.member.repository.MemberRepository
 import com.noreabang.strawberryrabbit.infra.exception.ModelNotFoundException
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.ui.Model
 import java.util.*
 
 @Service
@@ -22,7 +24,7 @@ class MemberService(
     private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
     @Transactional
-    fun createUser(memberCreateRequest: MemberCreateRequest): MemberResponse {
+    fun createMember(memberCreateRequest: MemberCreateRequest): MemberResponse {
         return memberRepository.save(
             Member.createMember(
                 memberCreateRequest,
@@ -38,6 +40,23 @@ class MemberService(
     fun getMemberDetails(): CustomMemberDetails? {
         val principal = SecurityContextHolder.getContext().authentication.principal
         return if (principal is CustomMemberDetails) principal else null
+    }
+
+    @Transactional
+    fun updateMember(memberUpdateRequest: MemberUpdateRequest, memberId: Long): MemberResponse {
+        val member = memberRepository.findByIdOrNull(memberId) ?: throw ModelNotFoundException("Member", memberId)
+
+        return member.update(
+            memberUpdateRequest,
+            bCryptPasswordEncoder.encode(memberUpdateRequest.password)
+        ).toResponse()
+    }
+
+    @Transactional
+    fun deleteMember(memberId: Long){
+        val member = memberRepository.findByIdOrNull(memberId) ?: throw ModelNotFoundException("Member", memberId)
+
+        memberRepository.delete(member)
     }
 
     fun refresh(authHeader: String, refreshToken: String): Map<String, Any> {

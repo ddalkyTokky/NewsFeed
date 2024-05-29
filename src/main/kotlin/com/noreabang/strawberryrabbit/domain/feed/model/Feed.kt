@@ -39,7 +39,7 @@ class Feed: CreatedAtEntity() {
 
     companion object{
         fun createFeed(feedRequest: CreateFeedRequest, member: Member, music:Music): Feed {
-            val feed: Feed = Feed()
+            val feed = Feed()
             feed.title = feedRequest.title
             feed.content = feedRequest.content
             feed.music = music
@@ -48,19 +48,20 @@ class Feed: CreatedAtEntity() {
         }
     }
 
-    fun updateFeed(feedRequest: UpdateFeedRequest){
+    fun updateFeed(feedRequest: UpdateFeedRequest, music: Music){
         this.title = feedRequest.title
         this.content = feedRequest.content
+        this.music = music
     }
 
     fun toSimpleResponse(): FeedResponse {
         return FeedResponse(
             title = this.title,
             content = this.content,
-            music = this.music,
-            member = this.member,
+            music = this.music!!.toResponse(),
+            member = this.member!!.toResponse(),
             createdAt = this.createdAt,
-            feedLike = this.feedLikes,
+            likeCnt = this.feedLikes.size.toLong(),
         )
     }
 
@@ -68,11 +69,11 @@ class Feed: CreatedAtEntity() {
         return FeedDetailResponse(
             title = this.title,
             content = this.content,
-            music = this.music,
-            member = this.member,
+            music = this.music!!.toResponse(),
+            member = this.member!!.toResponse(),
             createAt = this.createdAt,
-            feedLike = this.feedLikes,
-            comments = this.comments
+            feedLikes = this.feedLikes.map { it.toResponse() },
+            comments = this.comments.map { it.toResponse() }
         )
     }
 }

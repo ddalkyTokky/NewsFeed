@@ -35,15 +35,13 @@ class FeedController (
         return ResponseEntity.status(HttpStatus.OK).body(service.getFeedById(feedId))
     }
 
-    @PostMapping()
+    @PostMapping("/{musicId}")
     fun createFeed(
                    @RequestBody createFeedRequest: CreateFeedRequest,
-                   @RequestParam musicId: Long
+                   @PathVariable musicId: Long
     ) : ResponseEntity<FeedResponse> {
-        val temp = memberService.getMemberDetails()?.username
-        println("=========${temp}=========")
-        val email : String = memberService.getMemberDetails()?.username.toString()
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createFeed(createFeedRequest,email ,musicId))
+        val id = memberService.getMemberDetails()?.getMemberId()
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createFeed(createFeedRequest,id!! ,musicId))
     }
 
     @PutMapping("/{feedId}")

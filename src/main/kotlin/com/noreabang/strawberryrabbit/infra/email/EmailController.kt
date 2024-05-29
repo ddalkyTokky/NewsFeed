@@ -15,7 +15,7 @@ class EmailController(
 
     @PostMapping("/check")
     fun mailSend(@RequestBody @Valid emailRequest: EmailRequest): String {
-        return emailService.joinEmail(emailRequest.email);
+        return emailService.joinEmail(emailRequest.email)
     }
 
     // TODO: 이메일 인증 관련 컨트롤 필요

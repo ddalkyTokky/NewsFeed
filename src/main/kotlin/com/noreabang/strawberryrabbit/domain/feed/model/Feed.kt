@@ -48,9 +48,10 @@ class Feed: CreatedAtEntity() {
         }
     }
 
-    fun updateFeed(feedRequest: UpdateFeedRequest){
+    fun updateFeed(feedRequest: UpdateFeedRequest, music: Music){
         this.title = feedRequest.title
         this.content = feedRequest.content
+        this.music = music
     }
 
     fun toSimpleResponse(): FeedResponse {
@@ -73,7 +74,7 @@ class Feed: CreatedAtEntity() {
             member = this.member,
             createAt = this.createdAt,
 //            feedLike = this.feedLikes,
-            comments = this.comments.map { it.toResponse() }
+//            comments = this.comments.map { it.toResponse() }
         )
     }
 }

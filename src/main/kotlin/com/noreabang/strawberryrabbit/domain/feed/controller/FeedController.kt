@@ -27,7 +27,6 @@ class FeedController (
         @RequestParam content:String?,
         @PageableDefault(page = 0, size = 10, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
     ) : ResponseEntity<Page<FeedResponse>>{
-
         return ResponseEntity.status(HttpStatus.OK).body(service.getAllFeeds(pageable, type, content))
     }
 
@@ -47,15 +46,12 @@ class FeedController (
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createFeed(createFeedRequest,email ,musicId))
     }
 
-//    @PostMapping()
-//    fun createFeed(@RequestBody createFeedRequest: CreateFeedRequest) {
-//        val email = memberService.getMemberDetails()?.username
-//        println("************************ memberInfo: $email")
-//    }
-
     @PutMapping("/{feedId}")
-    fun updateFeed(@PathVariable feedId : Long, @RequestBody updateFeedRequest: UpdateFeedRequest) : ResponseEntity<FeedResponse> {
-        TODO()
+    fun updateFeed(@PathVariable feedId : Long,
+                   @RequestParam musicId: Long,
+                   @RequestBody updateFeedRequest: UpdateFeedRequest) : ResponseEntity<FeedResponse> {
+
+        return ResponseEntity.status(HttpStatus.OK).body(service.updateFeed(updateFeedRequest, musicId, feedId))
     }
 
     @DeleteMapping("/{feedId}")

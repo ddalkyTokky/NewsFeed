@@ -44,7 +44,7 @@ class MemberController (
 
     @PutMapping()
     fun updateMember(
-        @RequestBody memberUpdateRequest: MemberUpdateRequest
+        @RequestBody @Valid memberUpdateRequest: MemberUpdateRequest
     ): ResponseEntity<MemberResponse> {
         val memberId = memberService.getMemberDetails()?.getMemberId()
         return ResponseEntity

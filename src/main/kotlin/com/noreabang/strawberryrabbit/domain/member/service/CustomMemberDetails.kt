@@ -45,7 +45,7 @@ class CustomMemberDetails(
 
     fun getClaims(): Map<String, Any> {
         val dataMap = mutableMapOf<String, Any>(
-            "email" to member.email!!,
+            "id" to member.id!!,
         )
 
         return dataMap

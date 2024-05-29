@@ -4,9 +4,11 @@ import com.noreabang.strawberryrabbit.domain.member.dto.MemberCreateRequest
 import com.noreabang.strawberryrabbit.domain.member.dto.MemberResponse
 import com.noreabang.strawberryrabbit.domain.member.model.Member
 import com.noreabang.strawberryrabbit.domain.member.repository.MemberRepository
+import com.noreabang.strawberryrabbit.infra.exception.ModelNotFoundException
 import com.noreabang.strawberryrabbit.infra.secutiry.CustomMemberDetails
 import com.noreabang.strawberryrabbit.infra.secutiry.exception.CustomJwtException
 import com.noreabang.strawberryrabbit.infra.secutiry.util.JwtUtil
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -27,6 +29,10 @@ class MemberService(
                 bCryptPasswordEncoder.encode(memberCreateRequest.password),
             )
         ).toResponse()
+    }
+
+    fun getMemberById(id: Long): Member {
+        return memberRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Member", id)
     }
 
     fun getMemberDetails(): CustomMemberDetails? {

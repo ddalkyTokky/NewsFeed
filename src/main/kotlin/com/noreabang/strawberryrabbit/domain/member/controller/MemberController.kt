@@ -49,7 +49,7 @@ class MemberController (
         val memberId = memberService.getMemberDetails()?.getMemberId()
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(memberService.updateMember(memberUpdateRequest, memberId))
+            .body(memberService.updateMember(memberUpdateRequest, memberId!!))
     }
 
     @DeleteMapping
@@ -57,6 +57,6 @@ class MemberController (
         val memberId = memberService.getMemberDetails()?.getMemberId()
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(memberService.deleteMember(memberId))
+            .body(memberService.deleteMember(memberId!!))
     }
 }

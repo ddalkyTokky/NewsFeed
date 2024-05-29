@@ -20,8 +20,8 @@ class CommentController(
         @PathVariable feedId: Long,
         @RequestBody commentRequest: CommentRequest
     ): ResponseEntity<CommentResponse> {
-        val email = memberService.getMemberDetails()?.username
-        println(email)
+        val memberId = memberService.getMemberDetails()?.getMemberId()
+        println(memberId)
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(commentService.createComment(feedId, commentRequest))
@@ -32,8 +32,8 @@ class CommentController(
         @PathVariable commentId: Long,
         @RequestBody commentRequest: CommentRequest
     ): ResponseEntity<CommentResponse> {
-        val email = memberService.getMemberDetails()?.username
-        println(email)
+        val memberId = memberService.getMemberDetails()?.getMemberId()
+        println(memberId)
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(commentService.updateComment(commentId, commentRequest))
@@ -43,8 +43,8 @@ class CommentController(
     fun deleteComment(
         @PathVariable commentId: Long,
     ): ResponseEntity<Unit> {
-        val email = memberService.getMemberDetails()?.username
-        println(email)
+        val memberId = memberService.getMemberDetails()?.getMemberId()
+        println(memberId)
         commentService.deleteComment(commentId)
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)

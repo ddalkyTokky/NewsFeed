@@ -17,7 +17,6 @@ class FollowController(
     private val memberService: MemberService,
     private val followService: FollowService
 ){
-
     @PostMapping("/{memberId}")
     fun follow(
         @PathVariable memberId: Long

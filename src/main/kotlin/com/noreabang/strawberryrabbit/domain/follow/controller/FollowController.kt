@@ -17,14 +17,13 @@ class FollowController(
     private val memberService: MemberService,
     private val followService: FollowService
 ){
-
     @PostMapping("/{memberId}")
     fun follow(
         @PathVariable memberId: Long
     ): ResponseEntity<FollowResponse> {
         val followerId = memberService.getMemberDetails()?.getMemberId()
         return ResponseEntity
-            .status(HttpStatus.OK)
+            .status(HttpStatus.CREATED)
             .body(followService.follow(followerId!!, memberId))
     }
 
@@ -34,7 +33,7 @@ class FollowController(
     ): ResponseEntity<Unit> {
         val followerId = memberService.getMemberDetails()?.getMemberId()
         return ResponseEntity
-            .status(HttpStatus.OK)
+            .status(HttpStatus.NO_CONTENT)
             .body(followService.unFollow(followerId!!, memberId))
     }
 }

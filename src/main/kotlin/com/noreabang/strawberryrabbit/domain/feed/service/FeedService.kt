@@ -37,9 +37,14 @@ class FeedService(
         }
     }
 
-    fun getFeedById(id: Long): FeedDetailResponse {
+    fun getFeedResponseById(id: Long): FeedDetailResponse {
         val feed = feedRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Feed", id)
         return feed.toDetailResponse()
+    }
+
+    fun getFeedById(id: Long): Feed {
+        val feed = feedRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Feed", id)
+        return feed
     }
 
     @Transactional

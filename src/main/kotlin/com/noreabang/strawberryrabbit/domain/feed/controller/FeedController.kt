@@ -32,7 +32,7 @@ class FeedController (
 
     @GetMapping("/{feedId}")
     fun getFeed(@PathVariable feedId : Long) : ResponseEntity<FeedDetailResponse> {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getFeedById(feedId))
+        return ResponseEntity.status(HttpStatus.OK).body(service.getFeedResponseById(feedId))
     }
 
     @PostMapping()

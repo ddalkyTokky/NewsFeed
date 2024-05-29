@@ -37,6 +37,10 @@ class MemberService(
         ).toResponse()
     }
 
+    fun getMemberById(id: Long): Member {
+        return memberRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Member", id)
+    }
+
     fun getMemberDetails(): CustomMemberDetails? {
         val principal = SecurityContextHolder.getContext().authentication.principal
         return if (principal is CustomMemberDetails) principal else null

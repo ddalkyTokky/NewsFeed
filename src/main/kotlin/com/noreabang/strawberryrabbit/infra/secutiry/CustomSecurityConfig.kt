@@ -1,6 +1,7 @@
 package com.noreabang.strawberryrabbit.infra.secutiry
 
 
+import com.noreabang.strawberryrabbit.domain.member.service.MemberService
 import com.noreabang.strawberryrabbit.infra.secutiry.exception.CustomAccessDeniedException
 import com.noreabang.strawberryrabbit.infra.secutiry.filter.JsonMemberEmailPasswordAuthenticationFilter
 import com.noreabang.strawberryrabbit.infra.secutiry.filter.JwtCheckFilter
@@ -33,10 +34,10 @@ class CustomSecurityConfig(
     fun bCryptPasswordEncoder(): BCryptPasswordEncoder = BCryptPasswordEncoder() // 비밀번호 암호화
 
     @Bean
-    fun securityFilterChain(http: HttpSecurity, jwtUtil: JwtUtil): SecurityFilterChain {
+    fun securityFilterChain(http: HttpSecurity, jwtUtil: JwtUtil, memberService: MemberService): SecurityFilterChain {
         return http
             .addFilterBefore( // JWT 필터
-                JwtCheckFilter(jwtUtil), UsernamePasswordAuthenticationFilter::class.java
+                JwtCheckFilter(jwtUtil, memberService), UsernamePasswordAuthenticationFilter::class.java
             )
             .addFilterBefore( // JSON 데이터 처리
                 jsonUsernamePasswordAuthenticationFilter(),

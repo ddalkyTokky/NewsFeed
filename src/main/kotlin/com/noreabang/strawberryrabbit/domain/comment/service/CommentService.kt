@@ -19,7 +19,7 @@ class CommentService(
     private val feedRepository: FeedRepository,
 ) {
     @Transactional
-    fun createComment(feedId: Long, memberId: Long, request: CommentRequest): CommentResponse {
+    fun createComment(feedId: Long, memberId: Long?, request: CommentRequest): CommentResponse {
         val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
         val member = memberRepository.findByIdOrNull(memberId)
         return commentRepository.save(
@@ -29,14 +29,14 @@ class CommentService(
     }
 
     @Transactional
-    fun updateComment(commentId: Long, memberId: String?, request: CommentRequest): CommentResponse {
+    fun updateComment(commentId: Long, feedId: Long?, request: CommentRequest): CommentResponse {
         val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
             comment.content = request.content
             return commentRepository.save(comment).toResponse()
     }
 
     @Transactional
-    fun deleteComment(memberId: String?,commentId: Long) {
+    fun deleteComment(commentId: Long, feedId: Long?) {
         val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
         commentRepository.delete(comment)
     }

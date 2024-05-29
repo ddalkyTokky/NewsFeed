@@ -23,20 +23,19 @@ class CommentService(
         val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
         val member = memberRepository.findByIdOrNull(memberId)
         return commentRepository.save(
-            Comment.createComment(
-                request, feed, member)
+            Comment.createComment(request, feed, member)
         ).toResponse()
     }
 
     @Transactional
-    fun updateComment(commentId: Long, feedId: Long?, request: CommentRequest): CommentResponse {
+    fun updateComment(commentId: Long, request: CommentRequest): CommentResponse {
         val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
             comment.content = request.content
             return commentRepository.save(comment).toResponse()
     }
 
     @Transactional
-    fun deleteComment(commentId: Long, feedId: Long?) {
+    fun deleteComment(commentId: Long) {
         val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
         commentRepository.delete(comment)
     }

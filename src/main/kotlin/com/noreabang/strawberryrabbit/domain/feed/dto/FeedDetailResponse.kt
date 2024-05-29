@@ -14,5 +14,5 @@ data class FeedDetailResponse(
     val music: Music?,
     val createAt: Timestamp?,
 //    val feedLike: List<FeedLike>?,
-    val comments: List<CommentResponse>
+//    val comments: List<CommentResponse>
 )

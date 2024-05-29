@@ -52,11 +52,12 @@ class FeedService(
     }
 
     @Transactional
-    fun updateFeed(request: UpdateFeedRequest, musicId: Long): FeedResponse {
-//        val member //인증어케가져다씀?
-//        val music
-//        Feed.createFeed(request,member,music)
-        TODO()
+    fun updateFeed(updateFeedRequest: UpdateFeedRequest, musicId: Long, feedId: Long): FeedResponse {
+        val music = musicRepository.findByIdOrNull(musicId) ?: throw ModelNotFoundException("Music", musicId)
+        val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
+        feed.updateFeed(updateFeedRequest, music)
+
+        return feed.toSimpleResponse()
     }
 
     @Transactional

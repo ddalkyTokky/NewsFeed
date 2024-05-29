@@ -16,11 +16,13 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 class FeedService(
     private val feedRepository: FeedRepository,
     private val membersRepository:MemberRepository,
     private val musicRepository: MusicRepository,
 ) {
+    @Transactional(readOnly = true)
     fun getAllFeeds(pageable: Pageable, type: String?, search: String?): Page<FeedResponse> {
         if(type.equals("title")) {
             val feeds : Page<Feed> = feedRepository.findAllByTitleContains(search,pageable)
@@ -37,17 +39,18 @@ class FeedService(
         }
     }
 
+    @Transactional(readOnly = true)
     fun getFeedResponseById(id: Long): FeedDetailResponse {
         val feed = feedRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Feed", id)
         return feed.toDetailResponse()
     }
 
+    @Transactional(readOnly = true)
     fun getFeedById(id: Long): Feed {
         val feed = feedRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Feed", id)
         return feed
     }
 
-    @Transactional
     fun createFeed(request: CreateFeedRequest,id: Long,musicId: Long): FeedResponse {
         val member = membersRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Member", id)
         val music = musicRepository.findByIdOrNull(musicId) ?: throw ModelNotFoundException("Music", musicId)
@@ -56,7 +59,6 @@ class FeedService(
         ).toSimpleResponse()
     }
 
-    @Transactional
     fun updateFeed(updateFeedRequest: UpdateFeedRequest, musicId: Long, feedId: Long): FeedResponse {
         val music = musicRepository.findByIdOrNull(musicId) ?: throw ModelNotFoundException("Music", musicId)
         val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
@@ -65,7 +67,6 @@ class FeedService(
         return feed.toSimpleResponse()
     }
 
-    @Transactional
     fun deleteFeed(feedId:Long) {
         val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
         feedRepository.delete(feed)

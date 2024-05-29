@@ -1,9 +1,7 @@
 package com.noreabang.strawberryrabbit.infra.secutiry.filter
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.noreabang.strawberryrabbit.domain.member.dto.MemberCreateRequest
-import com.noreabang.strawberryrabbit.domain.member.model.Member
-import com.noreabang.strawberryrabbit.domain.member.model.SignUpType
+import com.noreabang.strawberryrabbit.domain.member.service.MemberService
 import com.noreabang.strawberryrabbit.infra.secutiry.CustomMemberDetails
 import com.noreabang.strawberryrabbit.infra.secutiry.util.JwtUtil
 import jakarta.servlet.FilterChain
@@ -16,7 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 
 class JwtCheckFilter(
-    private val jwtUtil: JwtUtil
+    private val jwtUtil: JwtUtil,
+    private val memberService: MemberService
 ) : OncePerRequestFilter() { // OncePerRequestFilter : 모든 요청에 대해 체크할 때 사용
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean { // 필터로 체크하지 않을 경로 or 메서드 지정
@@ -39,17 +38,10 @@ class JwtCheckFilter(
             val accessToken = authHeader.substring(7) // Bearer
             val claims = jwtUtil.validateToken(accessToken)
 
-            val user = CustomMemberDetails(
-                Member.createMember(
-                    MemberCreateRequest(
-                        claims["email"].toString(),
-                        claims["nickname"].toString(),
-                        "",
-                        null
-                    ),
-                    claims["password"].toString()
-                )
-            )
+            // token의 ID가 DB에 존재하는지 확인
+            val member = memberService.getMemberById(claims["id"].toString().toLong())
+
+            val user = CustomMemberDetails(member)
 
             val authenticationToken = UsernamePasswordAuthenticationToken(user, user.password, user.authorities)
 

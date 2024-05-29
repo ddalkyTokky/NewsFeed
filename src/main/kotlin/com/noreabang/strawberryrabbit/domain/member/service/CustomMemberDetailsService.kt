@@ -21,7 +21,6 @@ class CustomMemberDetailsService(
 
         try {
             member = memberRepository.findByEmail(email)
-            log.info("member =====> {}", member)
 
         } catch (e: InternalAuthenticationServiceException) {
             // TODO: InternalAuthenticationServiceException: Result must not be null에 대한 처리 필요

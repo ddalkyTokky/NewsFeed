@@ -15,12 +15,16 @@ class CustomMemberDetails(
         return collector
     }
 
+    fun getMemberId(): Long? { // 사용자 ID 반환(JWT 토큰에 있는 값을 가져옴)
+        return member.id
+    }
+
     override fun getPassword(): String? { // 사용자 비밀번호 반환
         return member.password
     }
 
-    override fun getUsername(): String? { // 사용자 이메일 반환
-        return member.email
+    override fun getUsername(): String? { // 사용자 닉네임 반환
+        return member.nickname
     }
 
     override fun isAccountNonExpired(): Boolean { // 계정 만료 여부(만료이면 true, 아니면 false)
@@ -41,7 +45,7 @@ class CustomMemberDetails(
 
     fun getClaims(): Map<String, Any> {
         val dataMap = mutableMapOf<String, Any>(
-            "email" to member.email!!,
+            "id" to member.id!!,
         )
 
         return dataMap

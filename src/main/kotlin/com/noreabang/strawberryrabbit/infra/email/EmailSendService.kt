@@ -52,7 +52,7 @@ class MailSendService(
         <p>딸기토끼의 노래방 가입을 위한 인증 메일 입니다.</p>
         <p>딸기토끼의 노래방을 이용해 주셔서 감사합니다.</p>
         <p>아래 번호를 이용해 인증을 완료해 주세요.</p>
-        <p>인증 번호는 ${authNumber} 입니다.</p>
+        <p>인증 번호는 $authNumber 입니다.</p>
       </div>
     </div>
         """.trimIndent()
@@ -61,7 +61,7 @@ class MailSendService(
     }
 
     fun mailSend(setFrom: String?, toMail: String?, title: String?, content: String?) { // 이메일 전송
-        val message = mailSender!!.createMimeMessage()
+        val message = mailSender.createMimeMessage()
 
         try {
             val helper = MimeMessageHelper(message, true, "utf-8") //이메일 메시지 관련 설정

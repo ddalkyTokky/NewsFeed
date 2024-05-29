@@ -36,7 +36,7 @@ class CommentController(
         println(memberId)
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(commentService.updateComment(commentId, commentRequest))
+            .body(commentService.updateComment(commentId, memberId, commentRequest))
     } // 댓글 수정
 
     @DeleteMapping("/{commentId}")
@@ -45,7 +45,7 @@ class CommentController(
     ): ResponseEntity<Unit> {
         val memberId = memberService.getMemberDetails()?.getMemberId()
         println(memberId)
-        commentService.deleteComment(commentId)
+        commentService.deleteComment(commentId, memberId)
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
             .build()

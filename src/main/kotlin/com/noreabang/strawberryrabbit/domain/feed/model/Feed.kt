@@ -73,7 +73,7 @@ class Feed: CreatedAtEntity() {
             member = this.member!!.toResponse(),
             createAt = this.createdAt,
 //            feedLike = this.feedLikes,
-//            comments = this.comments.map { it.toResponse() }
+            comments = this.comments.map { it.toResponse() }
         )
     }
 }

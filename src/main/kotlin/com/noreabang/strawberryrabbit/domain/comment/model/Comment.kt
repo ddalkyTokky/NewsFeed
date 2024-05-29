@@ -26,9 +26,11 @@ class Comment: CreatedAtEntity() {
     var feed: Feed? = null
 
     companion object{
-        fun createComment(commentRequest: CommentRequest): Comment {
+        fun createComment(commentRequest: CommentRequest, feed: Feed, member: Member?): Comment {
             val comment = Comment()
             comment.content = commentRequest.content
+            comment.feed = feed
+            comment.member = member
             return comment
         }
     }

@@ -1,9 +1,6 @@
 package com.noreabang.strawberryrabbit.infra.secutiry.filter
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.noreabang.strawberryrabbit.domain.member.dto.MemberCreateRequest
-import com.noreabang.strawberryrabbit.domain.member.model.Member
-import com.noreabang.strawberryrabbit.domain.member.repository.MemberRepository
 import com.noreabang.strawberryrabbit.domain.member.service.MemberService
 import com.noreabang.strawberryrabbit.infra.secutiry.CustomMemberDetails
 import com.noreabang.strawberryrabbit.infra.secutiry.util.JwtUtil
@@ -52,7 +49,7 @@ class JwtCheckFilter(
 
             filterChain.doFilter(request, response)
         } catch (e: Exception) {
-            logger.error("ERROR_ACCESS_TOKEN") 
+            logger.error("ERROR_ACCESS_TOKEN")
 
             response.status = HttpStatus.BAD_REQUEST.value()
             response.contentType = MediaType.APPLICATION_JSON_VALUE

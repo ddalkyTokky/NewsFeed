@@ -39,9 +39,7 @@ class FeedController (
     fun createFeed(
                    @RequestBody createFeedRequest: CreateFeedRequest
     ) : ResponseEntity<FeedResponse> {
-        println("??????????")
         val id : Long? = memberService.getMemberDetails()?.getMemberId()
-        println("============${id}=========")
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createFeed(createFeedRequest,id!!))
     }
 
@@ -54,7 +52,8 @@ class FeedController (
 
     @DeleteMapping("/{feedId}")
     fun deleteFeed(@PathVariable feedId : Long) : ResponseEntity<Unit> {
-        service.deleteFeed(feedId)
+        val memberId = memberService.getMemberDetails()?.getMemberId()
+        service.deleteFeed(feedId, memberId!!)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 

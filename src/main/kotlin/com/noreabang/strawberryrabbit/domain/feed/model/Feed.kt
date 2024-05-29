@@ -39,7 +39,7 @@ class Feed: CreatedAtEntity() {
 
     companion object{
         fun createFeed(feedRequest: CreateFeedRequest, member: Member, music:Music): Feed {
-            val feed: Feed = Feed()
+            val feed = Feed()
             feed.title = feedRequest.title
             feed.content = feedRequest.content
             feed.music = music

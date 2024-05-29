@@ -15,6 +15,10 @@ class CustomMemberDetails(
         return collector
     }
 
+    fun getMemberId(): Long? { // 사용자 ID 반환(JWT 토큰에 있는 값을 가져옴)
+        return member.id
+    }
+
     override fun getPassword(): String? { // 사용자 비밀번호 반환
         return member.password
     }

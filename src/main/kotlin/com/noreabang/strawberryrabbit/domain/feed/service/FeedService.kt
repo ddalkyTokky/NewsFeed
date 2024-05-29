@@ -7,6 +7,8 @@ import com.noreabang.strawberryrabbit.domain.feed.dto.FeedResponse
 import com.noreabang.strawberryrabbit.domain.feed.dto.UpdateFeedRequest
 import com.noreabang.strawberryrabbit.domain.feed.model.Feed
 import com.noreabang.strawberryrabbit.domain.feed.repository.FeedRepository
+import com.noreabang.strawberryrabbit.domain.member.repository.MemberRepository
+import com.noreabang.strawberryrabbit.domain.music.repository.MusicRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -15,35 +17,38 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class FeedService(
-    private val repository: FeedRepository
+    private val feedRepository: FeedRepository,
+    private val membersRepository:MemberRepository,
+    private val musicRepository: MusicRepository,
 ) {
     fun getAllFeeds(pageable: Pageable, type: String?, search: String?): Page<FeedResponse> {
         if(type.equals("title")) {
-            val feeds : Page<Feed> = repository.findAllByTitleContains(search,pageable)
+            val feeds : Page<Feed> = feedRepository.findAllByTitleContains(search,pageable)
             return feeds.map { it.toSimpleResponse() }
         } else if(type.equals("member")) {
-            val feeds : Page<Feed> = repository.findAllByMemberNicknameContains(search,pageable)
+            val feeds : Page<Feed> = feedRepository.findAllByMemberNicknameContains(search,pageable)
             return feeds.map { it.toSimpleResponse() }
         } else if(type.equals("content")) {
-            val feeds : Page<Feed> = repository.findAllByContentContains(search,pageable)
+            val feeds : Page<Feed> = feedRepository.findAllByContentContains(search,pageable)
             return feeds.map { it.toSimpleResponse() }
         } else {
-            val feeds : Page<Feed> = repository.findAll(pageable)
+            val feeds : Page<Feed> = feedRepository.findAll(pageable)
             return feeds.map { it.toSimpleResponse() }
         }
     }
 
     fun getFeedById(id: Long): FeedDetailResponse {
-        val feed = repository.findByIdOrNull(id) ?: throw ModelNotFoundException("Feed", id)
+        val feed = feedRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Feed", id)
         return feed.toDetailResponse()
     }
 
     @Transactional
-    fun createFeed(request: CreateFeedRequest,memberId:Long,musicId: Long): FeedResponse {
-//        val member
-//        val music
-//        Feed.createFeed(request,member,music)
-        TODO("멤버랑 뮤직 가져오고싶어요ㅠㅠ")
+    fun createFeed(request: CreateFeedRequest,email:String,musicId: Long): FeedResponse {
+        val member = membersRepository.findByEmail(email)
+        val music = musicRepository.findByIdOrNull(musicId) ?: throw ModelNotFoundException("Music", musicId)
+        return feedRepository.save(
+            Feed.createFeed(request, member, music)
+        ).toSimpleResponse()
     }
 
     @Transactional
@@ -51,13 +56,13 @@ class FeedService(
 //        val member //인증어케가져다씀?
 //        val music
 //        Feed.createFeed(request,member,music)
-        TODO("멤버랑 뮤직 가져오고싶어요ㅠㅠ")
+        TODO()
     }
 
     @Transactional
     fun deleteFeed(feedId:Long) {
-        val feed = repository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
-        repository.delete(feed)
+        val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
+        feedRepository.delete(feed)
     }
 
 }

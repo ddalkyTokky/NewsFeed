@@ -10,6 +10,7 @@ data class FeedResponse (
     val content: String?,
     val createdAt: Timestamp?,
     val member:Member?,
+//    val memberName: String?,
     val music: Music?,
-    val feedLike: List<FeedLike>?,
+//    val feedLike: List<FeedLike>?,
 )

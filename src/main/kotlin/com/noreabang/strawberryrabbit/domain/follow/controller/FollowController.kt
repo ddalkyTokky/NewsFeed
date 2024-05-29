@@ -25,7 +25,7 @@ class FollowController(
         val followerId = memberService.getMemberDetails()?.getMemberId()
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(followService.follow(followerId, memberId))
+            .body(followService.follow(followerId!!, memberId))
     }
 
     @DeleteMapping("/{memberId}")
@@ -35,6 +35,6 @@ class FollowController(
         val followerId = memberService.getMemberDetails()?.getMemberId()
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(followService.unFollow(followerId, memberId))
+            .body(followService.unFollow(followerId!!, memberId))
     }
 }

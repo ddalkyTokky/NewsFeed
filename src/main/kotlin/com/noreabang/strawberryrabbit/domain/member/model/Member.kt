@@ -15,7 +15,7 @@ class Member {
     @Column(nullable = false, length = 32)
     var nickname: String? = null
 
-    @Column(unique = true, length = 100)
+    @Column(nullable = false, unique = true, length = 100)
     var email: String? = null
 
     @Column(length = 100)

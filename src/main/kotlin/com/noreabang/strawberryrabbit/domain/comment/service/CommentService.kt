@@ -13,13 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CommentService(
     private val commentRepository: CommentRepository,
-
 ) {
-    fun getComment(commentId: Long): CommentResponse {
-        val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
-        return comment.toResponse()
-    }
-
     @Transactional
     fun createComment(feedId: Long, request: CommentRequest): CommentResponse {
         return commentRepository.save(
@@ -34,7 +28,6 @@ class CommentService(
         val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
             comment.content = request.content
             return commentRepository.save(comment).toResponse()
-
     }
 
     @Transactional

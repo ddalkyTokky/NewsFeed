@@ -3,6 +3,8 @@ package com.noreabang.strawberryrabbit.domain.comment.controller
 import com.noreabang.strawberryrabbit.domain.comment.dto.CommentRequest
 import com.noreabang.strawberryrabbit.domain.comment.dto.CommentResponse
 import com.noreabang.strawberryrabbit.domain.comment.service.CommentService
+import com.noreabang.strawberryrabbit.domain.member.service.MemberService
+
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -11,12 +13,15 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class CommentController(
     private val commentService: CommentService,
+    private val memberService: MemberService,
 ) {
-    @PostMapping("/{feedId}") //feedId로 변경
+    @PostMapping("/{feedId}")
     fun createComment(
         @PathVariable feedId: Long,
         @RequestBody commentRequest: CommentRequest
     ): ResponseEntity<CommentResponse> {
+        val email = memberService.getMemberDetails()?.username
+        println(email)
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(commentService.createComment(feedId, commentRequest))
@@ -27,6 +32,8 @@ class CommentController(
         @PathVariable commentId: Long,
         @RequestBody commentRequest: CommentRequest
     ): ResponseEntity<CommentResponse> {
+        val email = memberService.getMemberDetails()?.username
+        println(email)
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(commentService.updateComment(commentId, commentRequest))
@@ -36,6 +43,8 @@ class CommentController(
     fun deleteComment(
         @PathVariable commentId: Long,
     ): ResponseEntity<Unit> {
+        val email = memberService.getMemberDetails()?.username
+        println(email)
         commentService.deleteComment(commentId)
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)

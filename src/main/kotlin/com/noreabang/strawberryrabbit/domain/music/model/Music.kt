@@ -1,6 +1,7 @@
 package com.noreabang.strawberryrabbit.domain.music.model
 
 import com.noreabang.strawberryrabbit.domain.music.dto.MusicRequest
+import com.noreabang.strawberryrabbit.domain.music.dto.MusicResponse
 import jakarta.persistence.*
 
 @Entity
@@ -28,9 +29,12 @@ class Music {
         }
     }
 
-//    fun toResponse(): MusicResponse {
-//        return MusicResponse(
-//            // TODO musicResponse DTO 를 만들어 완성해주세요!!
-//        )
-//    }
+    fun toResponse(): MusicResponse {
+        return MusicResponse(
+            id = id!!,
+            singer = singer,
+            title = title,
+            cover = cover
+        )
+    }
 }

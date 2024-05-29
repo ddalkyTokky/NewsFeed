@@ -43,8 +43,8 @@ class FeedService(
     }
 
     @Transactional
-    fun createFeed(request: CreateFeedRequest,email:String,musicId: Long): FeedResponse {
-        val member = membersRepository.findByEmail(email)
+    fun createFeed(request: CreateFeedRequest,id: Long,musicId: Long): FeedResponse {
+        val member = membersRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Member", id)
         val music = musicRepository.findByIdOrNull(musicId) ?: throw ModelNotFoundException("Music", musicId)
         return feedRepository.save(
             Feed.createFeed(request, member, music)

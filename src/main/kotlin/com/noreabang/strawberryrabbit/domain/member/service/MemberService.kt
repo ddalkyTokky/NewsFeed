@@ -4,6 +4,7 @@ import com.noreabang.strawberryrabbit.domain.member.dto.MemberCreateRequest
 import com.noreabang.strawberryrabbit.domain.member.dto.MemberResponse
 import com.noreabang.strawberryrabbit.domain.member.dto.MemberUpdateRequest
 import com.noreabang.strawberryrabbit.domain.member.model.Member
+import com.noreabang.strawberryrabbit.domain.member.model.SignUpType
 import com.noreabang.strawberryrabbit.domain.member.repository.MemberRepository
 import com.noreabang.strawberryrabbit.infra.email.service.RedisService
 import com.noreabang.strawberryrabbit.infra.exception.ModelNotFoundException
@@ -25,7 +26,7 @@ class MemberService(
     private val redisService: RedisService
 ) {
     @Transactional
-    fun createMember(memberCreateRequest: MemberCreateRequest, image: String?): MemberResponse {
+    fun emailSignupMember(memberCreateRequest: MemberCreateRequest, image: String?): MemberResponse {
         val authNumber = redisService.getAuthNumber(memberCreateRequest.email)
             ?: throw IllegalArgumentException("Authentication timeout or no authentication request") // 인증 DB에 메일(key)이 없는 경우(인증 시간 초과 또는 인증 요청을 하지 않음 등)
 
@@ -37,7 +38,8 @@ class MemberService(
             Member.createMember(
                 memberCreateRequest,
                 bCryptPasswordEncoder.encode(memberCreateRequest.password),
-                image
+                image,
+                SignUpType.EMAIL
             )
         ).toResponse()
     }

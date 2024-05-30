@@ -31,18 +31,27 @@ class Member {
     var image: String? = null
 
     companion object {
-        fun createMember(memberCreateRequest: MemberCreateRequest, password: String, image:String?): Member {
+        fun createMember(
+            memberCreateRequest: MemberCreateRequest,
+            password: String,
+            image:String?,
+            signUpType: SignUpType
+        ): Member {
             val member: Member = Member()
             member.email = memberCreateRequest.email
             member.nickname = memberCreateRequest.nickname
             member.image = image
             member.password = password
-            member.signupType = SignUpType.EMAIL
+            member.signupType = signUpType
             return member
         }
     }
 
-    fun update(memberUpdateRequest: MemberUpdateRequest, password: String, image: String?): Member{
+    fun update(
+        memberUpdateRequest: MemberUpdateRequest,
+        password: String,
+        image: String?
+    ): Member{
         this.nickname = memberUpdateRequest.nickname
         if(image!=null) this.image = image
         this.password = password

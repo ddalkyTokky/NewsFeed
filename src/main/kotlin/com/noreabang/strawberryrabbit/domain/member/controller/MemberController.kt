@@ -23,12 +23,12 @@ class MemberController (
     private val log = LoggerFactory.getLogger(this::class.java)
 
     @PostMapping("/signup")
-    fun createMember(@RequestPart("file") file: MultipartFile?,
+    fun emailSignupMember(@RequestPart("file") file: MultipartFile?,
                      @Valid @RequestPart memberCreateRequest: MemberCreateRequest): ResponseEntity<MemberResponse> {
         val image = if(file==null) null else fileUploadService.UploadFile(file)
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(memberService.createMember(memberCreateRequest,image))
+            .body(memberService.emailSignupMember(memberCreateRequest,image))
     }
 
     // Swagger-ui에 보여주기 위함, 실제 login 처리는 Spring Security로 처리

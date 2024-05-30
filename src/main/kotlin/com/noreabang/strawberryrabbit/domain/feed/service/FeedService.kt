@@ -65,7 +65,7 @@ class FeedService(
         val music = musicRepository.findByIdOrNull(updateFeedRequest.musicId) ?: throw ModelNotFoundException("Music", updateFeedRequest.musicId)
 
         val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
-        if(memberId != feed.member!!.id) throw AccessDeniedException("This feed/comment is not yours!!")
+        if(memberId != feed.member!!.id) throw AccessDeniedException("Not access")
 
         feed.updateFeed(updateFeedRequest, music)
         return feed.toSimpleResponse()
@@ -73,7 +73,7 @@ class FeedService(
 
     fun deleteFeed(feedId:Long, memberId:Long) {
         val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
-        if(memberId != feed.member!!.id) throw AccessDeniedException("This feed/comment is not yours!!")
+        if(memberId != feed.member!!.id) throw AccessDeniedException("Not access")
         feedRepository.delete(feed)
     }
 

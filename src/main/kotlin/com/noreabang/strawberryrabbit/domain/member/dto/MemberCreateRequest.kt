@@ -10,7 +10,7 @@ data class MemberCreateRequest (
     val email: String,
 
     @field:NotBlank(message = "The nickname cannot be blank.")
-    @field:Size(min = 2, max = 32, message = "Nickname must be between 8 and 32")
+    @field:Size(min = 8, max = 32, message = "Nickname must be between 8 and 32")
     val nickname: String,
 
     @field:Size(min = 8, max = 16, message = "Password must be between 8 and 16")

@@ -27,10 +27,7 @@ class MemberService(
     @Transactional
     fun createMember(memberCreateRequest: MemberCreateRequest): MemberResponse {
         val authNumber = redisService.getAuthNumber(memberCreateRequest.email)
-
-        if (authNumber == null) { // 인증 DB에 메일(key)이 없는 경우(인증 시간 초과 또는 인증 요청을 하지 않음 등)
-            throw IllegalArgumentException("Authentication timeout or no authentication request")
-        }
+            ?: throw IllegalArgumentException("Authentication timeout or no authentication request") // 인증 DB에 메일(key)이 없는 경우(인증 시간 초과 또는 인증 요청을 하지 않음 등)
 
         if (authNumber != memberCreateRequest.authNumber) { // 인증 번호가 일치하지 않는 경우
             throw IllegalArgumentException("The authentication number does not match.")
@@ -48,8 +45,8 @@ class MemberService(
         return memberRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Member", id)
     }
 
-    fun getMemberByEmail(email: String): String? {
-        return memberRepository.findByEmail(email).email ?: null
+    fun getMemberByEmail(email: String): Member? {
+        return memberRepository.findByEmail(email)
     }
 
     fun getMemberDetails(): CustomMemberDetails? {

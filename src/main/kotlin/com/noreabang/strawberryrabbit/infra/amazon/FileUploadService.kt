@@ -19,7 +19,6 @@ class FileUploadService(
         val fileName = file.originalFilename ?: throw IOException("File name is empty")
         val exception = fileName.substringAfterLast('.')
         if(!image.contains(exception)) return null
-//        val fileUrl = "https://$bucket/$fileName"
         val metadata = ObjectMetadata().apply {
             contentType = file.contentType
             contentLength = file.size

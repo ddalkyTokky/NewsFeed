@@ -23,9 +23,9 @@ class MemberController (
     private val log = LoggerFactory.getLogger(this::class.java)
 
     @PostMapping("/signup")
-    fun createMember(@RequestPart("file") file: MultipartFile,
+    fun createMember(@RequestPart("file") file: MultipartFile?,
                      @Valid @RequestPart memberCreateRequest: MemberCreateRequest): ResponseEntity<MemberResponse> {
-        var image = fileUploadService.UploadFile(file)
+        val image = if(file==null) null else fileUploadService.UploadFile(file)
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(memberService.createMember(memberCreateRequest,image))
@@ -46,10 +46,10 @@ class MemberController (
     }
 
     @PutMapping()
-    fun updateMember(@RequestPart("file") file: MultipartFile,
+    fun updateMember(@RequestPart("file") file: MultipartFile?,
                      @RequestPart @Valid memberUpdateRequest: MemberUpdateRequest
     ): ResponseEntity<MemberResponse> {
-        val image = fileUploadService.UploadFile(file)
+        val image = if(file==null) null else fileUploadService.UploadFile(file)
         val memberId = memberService.getMemberDetails()?.getMemberId()
         return ResponseEntity
             .status(HttpStatus.OK)

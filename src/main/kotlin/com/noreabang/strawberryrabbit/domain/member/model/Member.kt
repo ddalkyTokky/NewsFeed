@@ -27,9 +27,6 @@ class Member {
     @JdbcType(PostgreSQLEnumJdbcType::class)
     var signupType: SignUpType = SignUpType.EMAIL
 
-    @Column(name = "social_token", length = 64)
-    var socialToken: String? = null
-
     @Column(length = 1000)
     var image: String? = null
 

@@ -1,10 +1,10 @@
 package com.noreabang.strawberryrabbit.domain.feed.dto
 
-import com.noreabang.strawberryrabbit.domain.music.dto.MusicResponse
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
-data class UpdateFeedRequest(
+data class FeedUpdateRequest(
     @field: NotBlank(message = "title cannot be blank")
     @field: Size(min = 1, max = 200, message = "title must be 1 ~ 200")
     val title:String,
@@ -13,6 +13,6 @@ data class UpdateFeedRequest(
     @field: Size(min = 1, max = 1000, message = "content must be 1 ~ 1000")
     val content: String,
 
-    @field: NotBlank(message = "musicId cannot be blank")
+    @field: NotNull(message = "musicId cannot be Null")
     val musicId: Long
 )

@@ -12,28 +12,29 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import java.util.*
 
 @RestController
 @RequestMapping("/members")
-class MemberController (
-    private  val memberService: MemberService,
+class MemberController(
+    private val memberService: MemberService,
     private val fileUploadService: FileUploadService
-){
+) {
     private val log = LoggerFactory.getLogger(this::class.java)
 
     @PostMapping("/signup")
-    fun createMember(@RequestPart("file") file: MultipartFile,
-                     @Valid @RequestPart memberCreateRequest: MemberCreateRequest): ResponseEntity<MemberResponse> {
+    fun createMember(
+        @RequestPart("file") file: MultipartFile,
+        @Valid @RequestPart memberCreateRequest: MemberCreateRequest
+    ): ResponseEntity<MemberResponse> {
         var image = fileUploadService.UploadFile(file)
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(memberService.createMember(memberCreateRequest,image))
+            .body(memberService.createMember(memberCreateRequest, image))
     }
 
     // Swagger-ui에 보여주기 위함, 실제 login 처리는 Spring Security로 처리
     @PostMapping("/signin")
-    fun singin (@RequestBody signinRequest: SigninRequest) {
+    fun singin(@RequestBody signinRequest: SigninRequest) {
         log.info("signin ${signinRequest}")
     }
 
@@ -46,8 +47,9 @@ class MemberController (
     }
 
     @PutMapping()
-    fun updateMember(@RequestPart("file") file: MultipartFile,
-                     @RequestPart @Valid memberUpdateRequest: MemberUpdateRequest
+    fun updateMember(
+        @RequestPart("file") file: MultipartFile,
+        @RequestPart @Valid memberUpdateRequest: MemberUpdateRequest
     ): ResponseEntity<MemberResponse> {
         val image = fileUploadService.UploadFile(file)
         val memberId = memberService.getMemberDetails()?.getMemberId()
@@ -62,5 +64,11 @@ class MemberController (
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
             .body(memberService.deleteMember(memberId!!))
+    }
+
+    @GetMapping("/signup/kakao")
+    fun signupKakao(accessToken: String) {
+        log.info("********** accessToken: {}", accessToken)
+        memberService.getMemberInfoFormKakao(accessToken)
     }
 }

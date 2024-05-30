@@ -13,4 +13,9 @@ class RedisService(
         val valueOperations = redisTemplate.opsForValue()
         valueOperations.set(email, authNumber, Duration.ofMinutes(5)) // 5분 뒤 삭제
     }
+
+    fun getAuthNumber(email: String): String? {
+        val valueOperations = redisTemplate.opsForValue()
+        return valueOperations.get(email)
+    }
 }

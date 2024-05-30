@@ -19,13 +19,16 @@ class Member {
     @Column(nullable = false, unique = true, length = 100)
     var email: String? = null
 
-    @Column(length = 100)
+    @Column(nullable = false, length = 64)
     var password: String? = null
 
     @Enumerated(EnumType.STRING)
     @Column(name = "signup_type", nullable = false)
     @JdbcType(PostgreSQLEnumJdbcType::class)
     var signupType: SignUpType = SignUpType.EMAIL
+
+    @Column(name = "social_token", length = 64)
+    var socialToken: String? = null
 
     @Column(length = 1000)
     var image: String? = null

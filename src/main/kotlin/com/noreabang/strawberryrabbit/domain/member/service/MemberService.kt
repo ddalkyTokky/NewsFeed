@@ -10,11 +10,18 @@ import com.noreabang.strawberryrabbit.infra.exception.ModelNotFoundException
 import com.noreabang.strawberryrabbit.infra.secutiry.CustomMemberDetails
 import com.noreabang.strawberryrabbit.infra.secutiry.exception.CustomJwtException
 import com.noreabang.strawberryrabbit.infra.secutiry.util.JwtUtil
+import org.apache.logging.log4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.client.RestTemplate
+import org.springframework.web.util.UriComponentsBuilder
 import java.util.*
 
 @Service
@@ -24,6 +31,8 @@ class MemberService(
     private val bCryptPasswordEncoder: BCryptPasswordEncoder,
     private val redisService: RedisService
 ) {
+    private val log = LoggerFactory.getLogger(this::class.java)
+
     @Transactional
     fun createMember(memberCreateRequest: MemberCreateRequest, image: String?): MemberResponse {
         val authNumber = redisService.getAuthNumber(memberCreateRequest.email)
@@ -110,5 +119,25 @@ class MemberService(
             }
         }
         return false
+    }
+
+    fun getMemberInfoFormKakao(accessToken: String) { // TODO: 엑세스 토큰으로 사용자 정보 가져오기
+        // TODO: 토큰 값이 null인 경우, 카카오 서버측에서는 우리가 클라이언트이기 때문에 400을 우리에게 던짐
+        // TODO: 그러면 우리의 클라이언트 쪽에는 500에러가 전달되므로 여기서 예외를 잡아서 프런트 쪽으로 전달해야 함
+        if (accessToken == "undefined") {
+            throw IllegalArgumentException("Access token cannot be empty")
+        }
+        val getMemberInfoURL = "https://kapi.kakao.com/v2/user/me"
+
+        val restTemplate = RestTemplate()
+
+        val headers = HttpHeaders()
+        headers.add("Authorization", "Bearer $accessToken")
+        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
+
+        val entity = HttpEntity<String>(headers)
+
+        val responseBody = restTemplate.exchange(getMemberInfoURL, HttpMethod.GET, entity, Map::class.java).body
+        log.info("********** body: {}", responseBody)
     }
 }

@@ -63,4 +63,10 @@ class MemberController (
             .status(HttpStatus.NO_CONTENT)
             .body(memberService.deleteMember(memberId!!))
     }
+
+    @GetMapping("/signup/kakao")
+    fun signupKakao(accessToken: String, refreshToken: String) {
+        log.info("********** accessToken: {}", accessToken)
+        memberService.getMemberInfoFormKakao(accessToken, refreshToken)
+    }
 }

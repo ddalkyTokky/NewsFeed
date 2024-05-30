@@ -24,11 +24,12 @@ class MemberService(
     private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
     @Transactional
-    fun createMember(memberCreateRequest: MemberCreateRequest): MemberResponse {
+    fun createMember(memberCreateRequest: MemberCreateRequest, image: String?): MemberResponse {
         return memberRepository.save(
             Member.createMember(
                 memberCreateRequest,
                 bCryptPasswordEncoder.encode(memberCreateRequest.password),
+                image
             )
         ).toResponse()
     }
@@ -43,12 +44,13 @@ class MemberService(
     }
 
     @Transactional
-    fun updateMember(memberUpdateRequest: MemberUpdateRequest, memberId: Long): MemberResponse {
+    fun updateMember(memberUpdateRequest: MemberUpdateRequest, memberId: Long, image: String?): MemberResponse {
         val member = memberRepository.findByIdOrNull(memberId) ?: throw ModelNotFoundException("Member", memberId)
 
         return member.update(
             memberUpdateRequest,
-            bCryptPasswordEncoder.encode(memberUpdateRequest.password)
+            bCryptPasswordEncoder.encode(memberUpdateRequest.password),
+            image
         ).toResponse()
     }
 

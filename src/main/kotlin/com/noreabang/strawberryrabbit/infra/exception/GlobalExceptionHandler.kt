@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.security.access.AccessDeniedException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -27,18 +28,8 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse(e.message))
     }
 
-    @ExceptionHandler(CustomJwtException::class)
-    fun handleCustomJwtException(e: CustomJwtException): ResponseEntity<List<String?>> {
-        return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).body(e.suppressedExceptions.map { it.message })
-    }
-
     @ExceptionHandler(AccessDeniedException::class)
-    fun handleAccessDeniedException(e: AccessDeniedException): ResponseEntity<List<String?>> {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.suppressedExceptions.map { it.message })
-    }
-
-    @ExceptionHandler(ConstraintViolationException::class)
-    fun handleConstraintViolationException(e: ConstraintViolationException): ResponseEntity<List<String>> {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.constraintViolations.map {it.message})
+    fun handleAccessDeniedException(e: AccessDeniedException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorResponse(e.message))
     }
 }

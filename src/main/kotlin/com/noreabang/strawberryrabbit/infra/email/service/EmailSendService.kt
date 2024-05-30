@@ -1,4 +1,4 @@
-package com.noreabang.strawberryrabbit.infra.email
+package com.noreabang.strawberryrabbit.infra.email.service
 
 import jakarta.mail.MessagingException
 import org.apache.logging.log4j.LogManager
@@ -10,7 +10,8 @@ import kotlin.random.Random
 
 @Service
 class MailSendService(
-    private val mailSender: JavaMailSender
+    private val mailSender: JavaMailSender,
+    private val redisService: RedisService
 ) {
     private val logger = LogManager.getLogger()
     private var authNumber = ""
@@ -69,7 +70,10 @@ class MailSendService(
             helper.setTo((toMail)!!) // 이메일 수신자 주소 설정
             helper.setSubject((title)!!) // 이메일 제목 설정
             helper.setText((content)!!, true) // 이메일 내용을 HTML로 설정
-            mailSender.send(message)
+
+            mailSender.send(message) // 이메일 전송
+
+            redisService.create(toMail, authNumber)
         } catch (e: MessagingException) { // 이메일 서버 연결 안됨, 잘못된 이메일 주소 사용, 인증 오류 발생 등
             logger.error(e.message)
         }

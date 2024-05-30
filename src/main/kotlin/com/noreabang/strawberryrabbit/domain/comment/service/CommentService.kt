@@ -12,6 +12,7 @@ import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+
 @Service
 @Transactional
 class CommentService(
@@ -32,7 +33,7 @@ class CommentService(
         val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
 
         if (comment.member != member) {
-            throw AccessDeniedException("This feed/comment is not yours!!")
+            throw AccessDeniedException("Not access")
         }
 
         comment.content = request.content
@@ -44,9 +45,8 @@ class CommentService(
         val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
 
         if (comment.member != member) {
-            throw AccessDeniedException("This feed/comment is not yours!!")
+            throw AccessDeniedException("Not access")
         }
-
         commentRepository.delete(comment)
     }
 }

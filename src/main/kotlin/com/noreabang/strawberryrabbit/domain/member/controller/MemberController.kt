@@ -7,8 +7,6 @@ import com.noreabang.strawberryrabbit.domain.member.dto.SigninRequest
 import com.noreabang.strawberryrabbit.domain.member.service.MemberService
 import com.noreabang.strawberryrabbit.infra.amazon.FileUploadService
 import jakarta.validation.Valid
-import com.noreabang.strawberryrabbit.infra.secutiry.exception.CustomJwtException
-import com.noreabang.strawberryrabbit.infra.secutiry.util.JwtUtil
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

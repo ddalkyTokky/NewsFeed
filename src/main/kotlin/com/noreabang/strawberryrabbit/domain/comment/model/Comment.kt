@@ -14,7 +14,7 @@ class Comment: CreatedAtEntity() {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 200)
     var content: String? = null
 
     @ManyToOne(fetch = FetchType.LAZY)

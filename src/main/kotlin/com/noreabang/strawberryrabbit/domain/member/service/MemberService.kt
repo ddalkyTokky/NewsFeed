@@ -5,6 +5,7 @@ import com.noreabang.strawberryrabbit.domain.member.dto.MemberResponse
 import com.noreabang.strawberryrabbit.domain.member.dto.MemberUpdateRequest
 import com.noreabang.strawberryrabbit.domain.member.model.Member
 import com.noreabang.strawberryrabbit.domain.member.repository.MemberRepository
+import com.noreabang.strawberryrabbit.infra.email.service.RedisService
 import com.noreabang.strawberryrabbit.infra.exception.ModelNotFoundException
 import com.noreabang.strawberryrabbit.infra.secutiry.CustomMemberDetails
 import com.noreabang.strawberryrabbit.infra.secutiry.exception.CustomJwtException
@@ -14,17 +15,27 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.ui.Model
 import java.util.*
 
 @Service
 class MemberService(
     private val memberRepository: MemberRepository,
     private val jwtUtil: JwtUtil,
-    private val bCryptPasswordEncoder: BCryptPasswordEncoder
+    private val bCryptPasswordEncoder: BCryptPasswordEncoder,
+    private val redisService: RedisService
 ) {
     @Transactional
     fun createMember(memberCreateRequest: MemberCreateRequest): MemberResponse {
+        val authNumber = redisService.getAuthNumber(memberCreateRequest.email)
+
+        if (authNumber == null) { // 인증 DB에 메일(key)이 없는 경우(인증 시간 초과 또는 인증 요청을 하지 않음 등)
+            throw IllegalArgumentException("Authentication timeout or no authentication request")
+        }
+
+        if (authNumber != memberCreateRequest.authNumber) { // 인증 번호가 일치하지 않는 경우
+            throw IllegalArgumentException("The authentication number does not match.")
+        }
+
         return memberRepository.save(
             Member.createMember(
                 memberCreateRequest,
@@ -35,6 +46,10 @@ class MemberService(
 
     fun getMemberById(id: Long): Member {
         return memberRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Member", id)
+    }
+
+    fun getMemberByEmail(email: String): String? {
+        return memberRepository.findByEmail(email).email ?: null
     }
 
     fun getMemberDetails(): CustomMemberDetails? {
@@ -53,7 +68,7 @@ class MemberService(
     }
 
     @Transactional
-    fun deleteMember(memberId: Long){
+    fun deleteMember(memberId: Long) {
         val member = memberRepository.findByIdOrNull(memberId) ?: throw ModelNotFoundException("Member", memberId)
 
         memberRepository.delete(member)

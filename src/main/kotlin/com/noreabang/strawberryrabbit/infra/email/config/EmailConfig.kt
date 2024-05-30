@@ -1,4 +1,4 @@
-package com.noreabang.strawberryrabbit.infra.email
+package com.noreabang.strawberryrabbit.infra.email.config
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean

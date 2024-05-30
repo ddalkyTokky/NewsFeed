@@ -25,7 +25,7 @@ class MemberService(
     private val redisService: RedisService
 ) {
     @Transactional
-    fun createMember(memberCreateRequest: MemberCreateRequest): MemberResponse {
+    fun createMember(memberCreateRequest: MemberCreateRequest, image: String?): MemberResponse {
         val authNumber = redisService.getAuthNumber(memberCreateRequest.email)
             ?: throw IllegalArgumentException("Authentication timeout or no authentication request") // 인증 DB에 메일(key)이 없는 경우(인증 시간 초과 또는 인증 요청을 하지 않음 등)
 
@@ -37,6 +37,7 @@ class MemberService(
             Member.createMember(
                 memberCreateRequest,
                 bCryptPasswordEncoder.encode(memberCreateRequest.password),
+                image
             )
         ).toResponse()
     }
@@ -55,12 +56,13 @@ class MemberService(
     }
 
     @Transactional
-    fun updateMember(memberUpdateRequest: MemberUpdateRequest, memberId: Long): MemberResponse {
+    fun updateMember(memberUpdateRequest: MemberUpdateRequest, memberId: Long, image: String?): MemberResponse {
         val member = memberRepository.findByIdOrNull(memberId) ?: throw ModelNotFoundException("Member", memberId)
 
         return member.update(
             memberUpdateRequest,
-            bCryptPasswordEncoder.encode(memberUpdateRequest.password)
+            bCryptPasswordEncoder.encode(memberUpdateRequest.password),
+            image
         ).toResponse()
     }
 

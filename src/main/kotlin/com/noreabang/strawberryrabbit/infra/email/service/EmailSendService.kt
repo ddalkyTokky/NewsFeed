@@ -42,6 +42,8 @@ class MailSendService(
         } catch (e: EmptyResultDataAccessException) { // 데이터가 없는 경우 발생
             logger.error(e.message)
 
+            makeRandomNumber()
+
             val setFrom = "hellou2312@google.com" // EmailConfig에 설정한 이메일 주소
             val toMail = email
             val title = "딸기토끼의 노래방 회원 가입 인증 이메일 입니다." // 이메일 제목, content: 이메일 본문
@@ -64,7 +66,7 @@ class MailSendService(
                     <p>딸기토끼의 노래방 가입을 위한 인증 메일 입니다.</p>
                     <p>딸기토끼의 노래방을 이용해 주셔서 감사합니다.</p>
                     <p>아래 번호를 이용해 인증을 완료해 주세요.</p>
-                    <p>인증 번호는 authNumber 입니다.</p>
+                    <p>인증 번호는 $authNumber 입니다.</p>
                   </div>
                 </div>
             """.trimIndent()

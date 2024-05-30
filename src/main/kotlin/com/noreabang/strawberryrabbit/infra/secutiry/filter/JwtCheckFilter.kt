@@ -64,6 +64,7 @@ class JwtCheckFilter(
             response.status = HttpStatus.BAD_REQUEST.value()
             response.contentType = MediaType.APPLICATION_JSON_VALUE
 
+
             jacksonObjectMapper().writeValue(response.writer, errorMessage)
         }
     }

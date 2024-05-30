@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.runApplication
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 
-@OpenAPIDefinition(servers = [Server(url = "https://localhost:80") ])
+@OpenAPIDefinition(servers = [Server(url = "https://taewan.strawberryrabbit.kro.kr/feeds") ])
 @SpringBootApplication(exclude = [SecurityAutoConfiguration::class])
 @EnableJpaAuditing
 class StrawberryrabbitApplication

@@ -31,20 +31,20 @@ class Member {
     var image: String? = null
 
     companion object {
-        fun createMember(memberCreateRequest: MemberCreateRequest, password: String): Member {
+        fun createMember(memberCreateRequest: MemberCreateRequest, password: String, image:String?): Member {
             val member: Member = Member()
             member.email = memberCreateRequest.email
             member.nickname = memberCreateRequest.nickname
-            member.image = memberCreateRequest.image
+            member.image = image
             member.password = password
             member.signupType = SignUpType.EMAIL
             return member
         }
     }
 
-    fun update(memberUpdateRequest: MemberUpdateRequest, password: String): Member{
+    fun update(memberUpdateRequest: MemberUpdateRequest, password: String, image: String?): Member{
         this.nickname = memberUpdateRequest.nickname
-        this.image = memberUpdateRequest.image
+        if(image!=null) this.image = image
         this.password = password
         return this
     }

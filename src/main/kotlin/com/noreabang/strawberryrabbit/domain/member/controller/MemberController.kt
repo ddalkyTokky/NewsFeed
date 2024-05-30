@@ -5,24 +5,30 @@ import com.noreabang.strawberryrabbit.domain.member.dto.MemberResponse
 import com.noreabang.strawberryrabbit.domain.member.dto.MemberUpdateRequest
 import com.noreabang.strawberryrabbit.domain.member.dto.SigninRequest
 import com.noreabang.strawberryrabbit.domain.member.service.MemberService
+import com.noreabang.strawberryrabbit.infra.amazon.FileUploadService
 import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import java.util.*
 
 @RestController
 @RequestMapping("/members")
 class MemberController (
-    private  val memberService: MemberService
+    private  val memberService: MemberService,
+    private val fileUploadService: FileUploadService
 ){
     private val log = LoggerFactory.getLogger(this::class.java)
 
     @PostMapping("/signup")
-    fun createMember(@Valid @RequestBody memberCreateRequest: MemberCreateRequest): ResponseEntity<MemberResponse> {
+    fun createMember(@RequestPart("file") file: MultipartFile,
+                     @Valid @RequestPart memberCreateRequest: MemberCreateRequest): ResponseEntity<MemberResponse> {
+        var image = fileUploadService.UploadFile(file)
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(memberService.createMember(memberCreateRequest))
+            .body(memberService.createMember(memberCreateRequest,image))
     }
 
     // Swagger-ui에 보여주기 위함, 실제 login 처리는 Spring Security로 처리
@@ -40,13 +46,14 @@ class MemberController (
     }
 
     @PutMapping()
-    fun updateMember(
-        @RequestBody @Valid memberUpdateRequest: MemberUpdateRequest
+    fun updateMember(@RequestPart("file") file: MultipartFile,
+                     @RequestPart @Valid memberUpdateRequest: MemberUpdateRequest
     ): ResponseEntity<MemberResponse> {
+        val image = fileUploadService.UploadFile(file)
         val memberId = memberService.getMemberDetails()?.getMemberId()
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(memberService.updateMember(memberUpdateRequest, memberId!!))
+            .body(memberService.updateMember(memberUpdateRequest, memberId!!, image))
     }
 
     @DeleteMapping

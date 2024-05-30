@@ -17,9 +17,6 @@ data class MemberCreateRequest (
     @field:NotBlank(message = "The password cannot be blank.")
     val password: String,
 
-    @field:Size(max = 1000, message = "image URL must be shorter than 1000")
-    val image: String?,
-
     @field:NotBlank(message = "The password cannot be blank.")
     val authNumber: String
 )

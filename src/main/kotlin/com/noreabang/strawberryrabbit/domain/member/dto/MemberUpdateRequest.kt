@@ -8,9 +8,6 @@ data class MemberUpdateRequest (
     @field:Size(min = 2, max = 32, message = "Nickname must be between 8 and 32")
     val nickname: String,
 
-    @field:Size(max = 1000, message = "image URL must be shorter than 1000")
-    val image:  String?,
-
     @field:Size(min = 8, max = 16, message = "Password must be between 8 and 16")
     @field:NotBlank(message = "The password cannot be blank.")
     val password: String?

@@ -11,11 +11,17 @@ import com.noreabang.strawberryrabbit.infra.exception.ModelNotFoundException
 import com.noreabang.strawberryrabbit.infra.secutiry.CustomMemberDetails
 import com.noreabang.strawberryrabbit.infra.secutiry.exception.CustomJwtException
 import com.noreabang.strawberryrabbit.infra.secutiry.util.JwtUtil
+import org.slf4j.LoggerFactory
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.client.RestTemplate
 import java.util.*
 
 @Service
@@ -25,6 +31,8 @@ class MemberService(
     private val bCryptPasswordEncoder: BCryptPasswordEncoder,
     private val redisService: RedisService
 ) {
+    private val log = LoggerFactory.getLogger(MemberService::class.java)
+
     @Transactional
     fun emailSignupMember(memberCreateRequest: MemberCreateRequest, image: String?): MemberResponse {
         val authNumber = redisService.getAuthNumber(memberCreateRequest.email)
@@ -112,5 +120,67 @@ class MemberService(
             }
         }
         return false
+    }
+
+    fun getMemberInfoFormKakao(accessToken: String, refreshToken: String): MutableMap<String, Any> { // 엑세스 토큰으로 사용자 정보 가져오기
+        // 토큰 값이 null인 경우, 카카오 서버측에서는 우리가 클라이언트이기 때문에 400을 우리에게 던짐
+        // 그러면 우리의 클라이언트 쪽에는 500에러가 전달되므로 여기서 예외를 잡아서 프런트 쪽으로 전달해야 함
+        if (accessToken == "undefined") {
+            throw IllegalArgumentException("Access token cannot be empty")
+        }
+        val getMemberInfoURL = "https://kapi.kakao.com/v2/user/me"
+
+        val restTemplate = RestTemplate()
+
+        val headers = HttpHeaders()
+        headers.add("Authorization", "Bearer $accessToken")
+        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
+
+        val entity = HttpEntity<String>(headers)
+
+        val responseBody = restTemplate.exchange(getMemberInfoURL, HttpMethod.GET, entity, Map::class.java).body
+        val kakaoAccount = responseBody?.get("kakao_account") as Map<*, *>
+
+        val email = kakaoAccount["email"]
+        val profile = kakaoAccount["profile"] as Map<*, *>
+        val nickname = profile["nickname"]
+        val profileImageUrl = profile["profile_image_url"]
+
+        log.info("********** email: {}", email)
+        log.info("********** nickname: {}", nickname)
+        log.info("********** profileImageUrl: {}", profileImageUrl)
+
+        try { // 일반 회원으로 가입되어 있다면 소셜 로그인 X
+            val isExistEmail = memberRepository.findByEmail(email.toString())
+
+            throw IllegalArgumentException("This email already exists.")
+
+            return mutableMapOf(email.toString() to "already exist")
+        } catch (e: EmptyResultDataAccessException) { // DB에 존재하지 않는 이메일이면 가입
+            val member = Member.createMember(
+                MemberCreateRequest(
+                    email = email.toString(),
+                    nickname = nickname.toString(),
+                    password = "",
+                    authNumber = ""
+                ),
+                refreshToken, // 소셜은 token이 password
+                profileImageUrl.toString(),
+                SignUpType.KAKAO
+            )
+            memberRepository.save(
+                member
+            )
+
+            val claims = CustomMemberDetails(member).getClaims().toMutableMap()
+
+            val accessToken = jwtUtil.generateToken(claims, 60) // 60분
+            val refreshToken = jwtUtil.generateToken(claims, 60 * 24) // 24시간
+
+            claims["accessToken"] = accessToken
+            claims["refreshToken"] = refreshToken
+
+            return claims
+        }
     }
 }

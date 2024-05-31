@@ -20,7 +20,7 @@ class FileUploadService(
         val exception = fileName.substringAfterLast('.')
         if(!image.contains(exception)) return null
         val metadata = ObjectMetadata().apply {
-            contentType = file.contentType
+            contentType = "image/${exception}"
             contentLength = file.size
         }
         //파일 저장하는부분

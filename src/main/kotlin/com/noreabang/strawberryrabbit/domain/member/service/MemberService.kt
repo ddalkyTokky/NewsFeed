@@ -141,6 +141,8 @@ class MemberService(
         val responseBody = restTemplate.exchange(getMemberInfoURL, HttpMethod.GET, entity, Map::class.java).body
         val kakaoAccount = responseBody?.get("kakao_account") as Map<*, *>
 
+        log.info("********** kakaoAccount: $kakaoAccount")
+
         val email = kakaoAccount["email"]
         val profile = kakaoAccount["profile"] as Map<*, *>
         val nickname = profile["nickname"]
@@ -152,6 +154,18 @@ class MemberService(
 
         try { // 일반 회원으로 가입되어 있다면 소셜 로그인 X
             val isExistEmail = memberRepository.findByEmail(email.toString())
+
+            if (isExistEmail.signupType == SignUpType.KAKAO) { // 이미 가입된 소셜 로그인 사용자의 경우
+                val claims = CustomMemberDetails(isExistEmail).getClaims().toMutableMap()
+
+                val accessToken = jwtUtil.generateToken(claims, 60) // 60분
+                val refreshToken = jwtUtil.generateToken(claims, 60 * 24) // 24시간
+
+                claims["accessToken"] = accessToken
+                claims["refreshToken"] = refreshToken
+
+                return claims
+            }
 
             throw IllegalArgumentException("This email already exists.")
 

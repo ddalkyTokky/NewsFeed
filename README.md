@@ -1,6 +1,6 @@
-# [발표자료.pdf](https://github.com/user-attachments/files/15512637/NewsFeed.PPT.pdf)              
-# [시연영상](https://www.youtube.com/watch?v=L8JOhpif_mQ)         
-# [협업 노션](https://www.notion.so/teamsparta/4-738be2ef42814995ace23e6298db6d1e)         
+# 0. [발표자료.pdf](https://github.com/user-attachments/files/15512637/NewsFeed.PPT.pdf)              
+# 0.[시연영상](https://www.youtube.com/watch?v=L8JOhpif_mQ)         
+# 0.[협업 노션](https://www.notion.so/teamsparta/4-738be2ef42814995ace23e6298db6d1e)         
 
 # 1. 기획문서
 ## 1-1. 와이어프레임

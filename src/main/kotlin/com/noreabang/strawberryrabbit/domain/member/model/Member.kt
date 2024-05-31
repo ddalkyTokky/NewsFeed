@@ -61,8 +61,8 @@ class Member {
     fun toResponse(): MemberResponse {
         return MemberResponse(
             this.id!!,
-            this.nickname!!,
             this.email!!,
+            this.nickname!!,
             this.image
         )
     }

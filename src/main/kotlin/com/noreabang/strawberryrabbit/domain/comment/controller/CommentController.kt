@@ -4,6 +4,7 @@ import com.noreabang.strawberryrabbit.domain.comment.dto.CommentRequest
 import com.noreabang.strawberryrabbit.domain.comment.dto.CommentResponse
 import com.noreabang.strawberryrabbit.domain.comment.service.CommentService
 import com.noreabang.strawberryrabbit.domain.member.service.MemberService
+import jakarta.validation.Valid
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -18,7 +19,7 @@ class CommentController(
     @PostMapping("/{feedId}")
     fun createComment(
         @PathVariable feedId: Long,
-        @RequestBody commentRequest: CommentRequest
+        @RequestBody @Valid commentRequest: CommentRequest
     ): ResponseEntity<CommentResponse> {
         val memberId = memberService.getMemberDetails()?.getMemberId()
         println(memberId)
@@ -30,7 +31,7 @@ class CommentController(
     @PutMapping("/{commentId}")
     fun updateComment(
         @PathVariable commentId: Long,
-        @RequestBody commentRequest: CommentRequest
+        @RequestBody @Valid commentRequest: CommentRequest
     ): ResponseEntity<CommentResponse> {
         val memberId = memberService.getMemberDetails()?.getMemberId()
         println(memberId)

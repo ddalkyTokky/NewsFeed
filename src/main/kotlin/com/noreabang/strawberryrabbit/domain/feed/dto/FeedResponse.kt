@@ -6,6 +6,7 @@ import com.noreabang.strawberryrabbit.domain.music.dto.MusicResponse
 import java.sql.Timestamp
 
 data class FeedResponse (
+    val id: Long?,
     val title: String?,
     val content: String?,
     val createdAt: Timestamp?,

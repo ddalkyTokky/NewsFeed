@@ -2,10 +2,10 @@ package com.noreabang.strawberryrabbit.domain.feed.model
 
 import com.noreabang.strawberryrabbit.domain.CreatedAtEntity
 import com.noreabang.strawberryrabbit.domain.comment.model.Comment
-import com.noreabang.strawberryrabbit.domain.feed.dto.CreateFeedRequest
+import com.noreabang.strawberryrabbit.domain.feed.dto.FeedCreateRequest
 import com.noreabang.strawberryrabbit.domain.feed.dto.FeedDetailResponse
 import com.noreabang.strawberryrabbit.domain.feed.dto.FeedResponse
-import com.noreabang.strawberryrabbit.domain.feed.dto.UpdateFeedRequest
+import com.noreabang.strawberryrabbit.domain.feed.dto.FeedUpdateRequest
 import com.noreabang.strawberryrabbit.domain.feedlike.model.FeedLike
 import com.noreabang.strawberryrabbit.domain.member.model.Member
 import com.noreabang.strawberryrabbit.domain.music.model.Music
@@ -38,7 +38,7 @@ class Feed: CreatedAtEntity() {
     val feedLikes: MutableList<FeedLike> = mutableListOf()
 
     companion object{
-        fun createFeed(feedRequest: CreateFeedRequest, member: Member, music:Music): Feed {
+        fun createFeed(feedRequest: FeedCreateRequest, member: Member, music:Music): Feed {
             val feed = Feed()
             feed.title = feedRequest.title
             feed.content = feedRequest.content
@@ -48,7 +48,7 @@ class Feed: CreatedAtEntity() {
         }
     }
 
-    fun updateFeed(feedRequest: UpdateFeedRequest, music: Music){
+    fun updateFeed(feedRequest: FeedUpdateRequest, music: Music){
         this.title = feedRequest.title
         this.content = feedRequest.content
         this.music = music
@@ -56,6 +56,7 @@ class Feed: CreatedAtEntity() {
 
     fun toSimpleResponse(): FeedResponse {
         return FeedResponse(
+            id = this.id,
             title = this.title,
             content = this.content,
             music = this.music!!.toResponse(),

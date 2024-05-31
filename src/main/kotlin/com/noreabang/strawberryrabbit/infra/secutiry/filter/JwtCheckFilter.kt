@@ -20,7 +20,7 @@ class JwtCheckFilter(
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean { // 필터로 체크하지 않을 경로 or 메서드 지정
         val path = request.requestURI
-        val urls = listOf("/members/signin", "/members/signup", "/members/refresh")
+        val urls = listOf("/members/signin", "/members/signup", "/members/refresh", "/email")
 
         // // GET 요청은 필터링 X || path의 접두사와 일치하는 URI가 있으면 필터 체크 X
         return "GET".equals(request.method) || urls.any { path.startsWith(it) }
@@ -35,7 +35,7 @@ class JwtCheckFilter(
         val authHeader = request.getHeader("Authorization")
 
         try {
-            val accessToken = authHeader.substring(7) // Bearer
+            val accessToken = authHeader
             val claims = jwtUtil.validateToken(accessToken)
 
             // token의 ID가 DB에 존재하는지 확인
@@ -49,12 +49,23 @@ class JwtCheckFilter(
 
             filterChain.doFilter(request, response)
         } catch (e: Exception) {
-            logger.error("ERROR_ACCESS_TOKEN")
+            logger.error(e.message)
+
+            var errorMessage = e.message
+
+            if (e.message == null) { // 헤더에 토큰을 넣지 않은 경우: NullPointException
+                errorMessage = "No token"
+            }
+
+            if (e.message?.startsWith("Range [7") == true) { // 헤더의 값의 길이가 짧은 경우(ex: Bear)
+                errorMessage = "Check authentication type"
+            }
 
             response.status = HttpStatus.BAD_REQUEST.value()
             response.contentType = MediaType.APPLICATION_JSON_VALUE
 
-            jacksonObjectMapper().writeValue(response.writer, "ERROR_ACCESS_TOKEN")
+
+            jacksonObjectMapper().writeValue(response.writer, errorMessage)
         }
     }
 }

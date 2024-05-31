@@ -1,10 +1,10 @@
 package com.noreabang.strawberryrabbit.domain.feed.service
 
 import com.noreabang.strawberryrabbit.infra.exception.ModelNotFoundException
-import com.noreabang.strawberryrabbit.domain.feed.dto.CreateFeedRequest
+import com.noreabang.strawberryrabbit.domain.feed.dto.FeedCreateRequest
 import com.noreabang.strawberryrabbit.domain.feed.dto.FeedDetailResponse
 import com.noreabang.strawberryrabbit.domain.feed.dto.FeedResponse
-import com.noreabang.strawberryrabbit.domain.feed.dto.UpdateFeedRequest
+import com.noreabang.strawberryrabbit.domain.feed.dto.FeedUpdateRequest
 import com.noreabang.strawberryrabbit.domain.feed.model.Feed
 import com.noreabang.strawberryrabbit.domain.feed.repository.FeedRepository
 import com.noreabang.strawberryrabbit.domain.member.repository.MemberRepository
@@ -52,7 +52,7 @@ class FeedService(
         return feed
     }
     @Transactional
-    fun createFeed(request: CreateFeedRequest,id: Long): FeedResponse {
+    fun createFeed(request: FeedCreateRequest, id: Long): FeedResponse {
         val member = membersRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Member", id)
         val music = musicRepository.findByIdOrNull(request.musicId) ?: throw ModelNotFoundException("Music", request.musicId)
         return feedRepository.save(
@@ -61,11 +61,11 @@ class FeedService(
     }
 
     @Transactional
-    fun updateFeed(updateFeedRequest: UpdateFeedRequest, feedId: Long, memberId:Long): FeedResponse {
+    fun updateFeed(updateFeedRequest: FeedUpdateRequest, feedId: Long, memberId:Long): FeedResponse {
         val music = musicRepository.findByIdOrNull(updateFeedRequest.musicId) ?: throw ModelNotFoundException("Music", updateFeedRequest.musicId)
 
         val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
-        if(memberId != feed.member!!.id) throw AccessDeniedException("Not access")
+        if(memberId != feed.member!!.id) throw AccessDeniedException("This feed/comment is not yours!!")
 
         feed.updateFeed(updateFeedRequest, music)
         return feed.toSimpleResponse()
@@ -73,7 +73,7 @@ class FeedService(
 
     fun deleteFeed(feedId:Long, memberId:Long) {
         val feed = feedRepository.findByIdOrNull(feedId) ?: throw ModelNotFoundException("Feed", feedId)
-        if(memberId != feed.member!!.id) throw AccessDeniedException("Not access")
+        if(memberId != feed.member!!.id) throw AccessDeniedException("This feed/comment is not yours!!")
         feedRepository.delete(feed)
     }
 

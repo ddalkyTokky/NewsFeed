@@ -33,7 +33,7 @@ class CommentService(
         val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
 
         if (comment.member != member) {
-            throw AccessDeniedException("Not access")
+            throw AccessDeniedException("This feed/comment is not yours!!")
         }
 
         comment.content = request.content
@@ -45,7 +45,7 @@ class CommentService(
         val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
 
         if (comment.member != member) {
-            throw AccessDeniedException("Not access")
+            throw AccessDeniedException("This feed/comment is not yours!!")
         }
         commentRepository.delete(comment)
     }

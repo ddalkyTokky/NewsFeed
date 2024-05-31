@@ -17,6 +17,9 @@ class FollowService (
 ){
     @Transactional
     fun follow(followerId: Long, followeeId: Long): FollowResponse{
+        if(followerId == followeeId){
+            throw IllegalArgumentException("You cant follow yourself")
+        }
         val follower = memberService.getMemberById(followerId)
         val followee = memberService.getMemberById(followeeId)
         return followRepository.save(
@@ -29,6 +32,9 @@ class FollowService (
 
     @Transactional
     fun unFollow(followerId: Long, followeeId: Long){
+        if(followerId == followeeId){
+            throw IllegalArgumentException("You cant unfollow yourself")
+        }
         val followId: FollowId = FollowId()
         followId.follower = memberService.getMemberById(followerId)
         followId.followee = memberService.getMemberById(followeeId)

@@ -1,11 +1,12 @@
 package com.noreabang.strawberryrabbit.domain.feed.controller
 
-import com.noreabang.strawberryrabbit.domain.feed.dto.CreateFeedRequest
+import com.noreabang.strawberryrabbit.domain.feed.dto.FeedCreateRequest
 import com.noreabang.strawberryrabbit.domain.feed.dto.FeedDetailResponse
 import com.noreabang.strawberryrabbit.domain.feed.dto.FeedResponse
-import com.noreabang.strawberryrabbit.domain.feed.dto.UpdateFeedRequest
+import com.noreabang.strawberryrabbit.domain.feed.dto.FeedUpdateRequest
 import com.noreabang.strawberryrabbit.domain.feed.service.FeedService
 import com.noreabang.strawberryrabbit.domain.member.service.MemberService
+import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -37,7 +38,7 @@ class FeedController (
 
     @PostMapping()
     fun createFeed(
-                   @RequestBody createFeedRequest: CreateFeedRequest
+                   @RequestBody @Valid createFeedRequest: FeedCreateRequest
     ) : ResponseEntity<FeedResponse> {
         val id : Long? = memberService.getMemberDetails()?.getMemberId()
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createFeed(createFeedRequest, id!!))
@@ -45,7 +46,7 @@ class FeedController (
 
     @PutMapping("/{feedId}")
     fun updateFeed(@PathVariable feedId : Long,
-                   @RequestBody updateFeedRequest: UpdateFeedRequest) : ResponseEntity<FeedResponse> {
+                   @RequestBody @Valid updateFeedRequest: FeedUpdateRequest) : ResponseEntity<FeedResponse> {
         val memberId = memberService.getMemberDetails()?.getMemberId()
         return ResponseEntity.status(HttpStatus.OK).body(service.updateFeed(updateFeedRequest, feedId, memberId!!))
     }

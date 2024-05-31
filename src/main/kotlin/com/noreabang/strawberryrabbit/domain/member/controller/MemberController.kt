@@ -63,4 +63,10 @@ class MemberController (
             .status(HttpStatus.NO_CONTENT)
             .body(memberService.deleteMember(memberId!!))
     }
+
+    @GetMapping("/signup/kakao")
+    fun signupKakao(accessToken: String, refreshToken: String): ResponseEntity<MutableMap<String, Any>> {
+        log.info("********** accessToken: {}, refreshToken: {}", accessToken, refreshToken)
+        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.getMemberInfoFormKakao(accessToken, refreshToken))
+    }
 }

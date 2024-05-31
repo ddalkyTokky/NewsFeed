@@ -29,7 +29,7 @@ class EmailConfig {
         javaMailProperties["mail.smtp.starttls.enable"] = "true" // STARTTLS(TLS를 시작하는 명령) 사용, 암호화된 통신 활성화
         javaMailProperties["mail.debug"] = "true" // 디버깅 정보 출력
         javaMailProperties["mail.smtp.ssl.trust"] = "smtp.naver.com" // smtp 서버의 ssl 인증서 신뢰
-        javaMailProperties["mail.smtp.ssl.protocols"] = "TLSv1.2" // ssl 프로토콜 버젼
+        javaMailProperties["mail.smtp.ssl.protocols"] = "TLSv1.3" // ssl 프로토콜 버젼
 
         mailSender.javaMailProperties = javaMailProperties // mailSender 위 설정 추가
 

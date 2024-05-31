@@ -56,6 +56,7 @@ class Feed: CreatedAtEntity() {
 
     fun toSimpleResponse(): FeedResponse {
         return FeedResponse(
+            id = this.id,
             title = this.title,
             content = this.content,
             music = this.music!!.toResponse(),

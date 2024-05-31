@@ -65,8 +65,8 @@ class MemberController (
     }
 
     @GetMapping("/signup/kakao")
-    fun signupKakao(accessToken: String, refreshToken: String) {
-        log.info("********** accessToken: {}", accessToken)
-        memberService.getMemberInfoFormKakao(accessToken, refreshToken)
+    fun signupKakao(accessToken: String, refreshToken: String): ResponseEntity<MutableMap<String, Any>> {
+        log.info("********** accessToken: {}, refreshToken: {}", accessToken, refreshToken)
+        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.getMemberInfoFormKakao(accessToken, refreshToken))
     }
 }

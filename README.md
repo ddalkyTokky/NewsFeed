@@ -1,5 +1,5 @@
 # 0. 관련 자료 및 시연 영상
-**[발표자료.pdf](https://github.com/user-attachments/files/15527368/NewFeed.PPT.pdf)**                     
+**[발표자료.pdf](https://github.com/user-attachments/files/15527682/NewsFeed.PPT.pdf)**                     
 **[시연영상](https://www.youtube.com/watch?v=L8JOhpif_mQ)**         
 **[협업 노션](https://www.notion.so/teamsparta/4-738be2ef42814995ace23e6298db6d1e)**         
 

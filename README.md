@@ -1,8 +1,8 @@
 # 0. 관련 자료 및 시연 영상
 **[발표자료.pdf](https://github.com/user-attachments/files/15527682/NewsFeed.PPT.pdf)**                     
 **[시연영상](https://www.youtube.com/watch?v=L8JOhpif_mQ)**         
-<!-- **[협업 노션](https://www.notion.so/teamsparta/4-738be2ef42814995ace23e6298db6d1e)**         -->
 **[협업 노션](https://bumpy-nerine-e96.notion.site/4-3d7ba59833234a079e92028091c94e65)**             
+<!-- **[협업 노션](https://www.notion.so/teamsparta/4-738be2ef42814995ace23e6298db6d1e)**         -->
 
 # 1. 기획문서
 ## 1-1. 와이어프레임
